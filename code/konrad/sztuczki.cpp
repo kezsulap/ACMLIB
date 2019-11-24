@@ -217,3 +217,22 @@ int main() {
 #include <ext/pb_ds/assoc_container.hpp>
 using namespace __gnu_pbds;
 sim, class m> using my_unordered_map = cc_hash_table<c, m, hash<c>>;
+int FastMax(int x, int y) { return x - y >> 31 & (x ^ y) ^ x; }
+int FastMin(int x, int y) { return x - y >> 31 & (x ^ y) ^ y; }
+// Działa dla wszystkich x oprócz -2**31 (bo 2**31 się nie mieści w typie int).
+int FastAbs(int x)        { return (x ^ x >> 31) - (x >> 31); }
+int FastGCD(int a, int b) {
+	int r = 0;
+	while (a && b) {
+		int x = __builtin_ctz(a);
+		int y = __builtin_ctz(b);
+		int z = FastMin(x, y);
+		r += z;
+		a >>= x;
+		b >>= y;
+		int c = FastAbs(a - b);
+		a = (a + b - c) >> 1;
+		b = c;
+	}
+	return (a + b) << r;
+}
