@@ -68,22 +68,30 @@ template<typename T>vector<T> multiply(const vector<T> & a, const vector<T> & b,
 				llround(done[i].real) : done[i].real;
 	//REP(i,ans.size())err=max(err,abs(done[i].real-ans[i]));
 	}
-	else { // Split big INTEGERS into pairs a1*M+a2,
-		const T M = 150; // where M = sqrt(max_absvalue).
-		vector<C> t[2]; // This version is 2.2-2.5 times slower.
-		REP(x, 2) {
+	else {
+		const int M = 1 << 15;
+		vector <C> t[2];
+		for (int x = 0; x < 2; ++x) {
 			t[x].resize(n);
-			auto & in = x ? b : a;
-			REP(i, in.size()) t[x][i]=C{ld(in[i]%M), ld(in[i]/M)};
+			const vector <T> & in = (x ? b : a);
+			for (int i = 0; i < (int) in.size(); ++i)
+				t[x][i] = C{ld(in[i] % M), ld(in[i] / M)};
 			dft(t[x], false);
 		}
-		T mul = 1;
-		for(int s = 0; s < 3; ++s, mul *= M) {
-			vector<C> prod(n);
-			REP(x, 2) REP(y, 2) if(x + y == s) REP(i, n)
-				prod[i] += speed(t[0], i, x) * speed(t[1], i, y);
-			dft(prod, true);
-			REP(i, ans.size()) ans[i]+= llround(prod[i].real)*mul;
+		vector <C> d1(n), d2(n);
+		for (int i = 0; i < n; ++i) {
+			d1[i] += speed(t[0], i, 0) * speed(t[1], i, 0);
+			d1[i] += speed(t[0], i, 1) * speed(t[1], i, 1) * C{0, 1};
+			d2[i] += speed(t[0], i, 0) * speed(t[1], i, 1);
+			d2[i] += speed(t[0], i, 1) * speed(t[1], i, 0);
+		}
+		dft(d1, true);
+		dft(d2, true);
+		for (int i = 0; i < n; ++i) {
+			d1[i].imag /= n;
+		}
+		for (int i = 0; i < (int) ans.size(); ++i) {
+			ans[i] = (llround(d1[i].real) + llround(d2[i].real) * M + llround(d1[i].imag) % mod * (M * M)) % mod;
 		}
 	}
 	return ans;
