@@ -2,7 +2,6 @@
 const ll mod = 998244353, omega = 31, deg = 23; //ord(omega) mod = 2^deg
 //const ll mod = 27ll << 56 | 1, omega = 11, deg = 56;
 //const ll mod = 65537, omega = 3, deg = 16;
-#define rep(i,n) for(int i = 0; i < int(n); ++i)
 ll powe(ll b, ll e) {
 	ll r = 1;
 	while (e) {
@@ -41,17 +40,13 @@ void dft(vector<ll> & a, bool rev) {
 				if (a[i + k + len] < 0) a[i + k + len] += mod;
 			}
 	}
-	if (rev) {
-		int r = __builtin_ctz(n);
-		for (int i = 0; i < n; ++i) for (int j = 0; j < r; ++j) {
-			if (a[i] % 2) a[i] += mod;
-			a[i] /= 2;
-		}
+		if (rev) {
+		int r = powe(n, mod - 2);
+		for (int i = 0; i < n; ++i) a[i] = a[i] * r % mod;
 	}
 }
 vector <ll> mul(vector <ll> a, vector <ll> b) {
 	int ret_size = a.size() + b.size() - 1;
-	vector <ll> ans(a.size() + b.size() - 1);
 	int n = a.size() + b.size();
 	while (n & (n - 1)) n++;
 	a.resize(n);
@@ -63,4 +58,3 @@ vector <ll> mul(vector <ll> a, vector <ll> b) {
 	a.resize(ret_size);
 	return a;
 }
-
