@@ -1,3 +1,4 @@
+#undef tree
 #define root this->node_begin()
 #define none this->node_end()
 #define V get_metadata().in
@@ -17,7 +18,7 @@
 		}
 	};
 //Jesli nie potrzebujemy find_by_order i order_of_key, to wystarczy:
-	template <class c> struct Baz {mutable c in;};
+//	template <class c> struct Baz {mutable c in;};
 //i wszedzie dalej pomijamy parametr bool ord, oraz w update wyroznione linie
 	template <class c, bool b> struct Baz {
 		mutable int size;
