@@ -1,42 +1,54 @@
 //~ https://en.wikipedia.org/wiki/Berlekamp%E2%80%93Massey_algorithm
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long ll;
-const int mod = 1000 * 1000 * 1000 + 7;
-void add_self(int & a, int b) { a += b; if(a >= mod) a -= mod; }
-void sub_self(int & a, int b) { a -= b; if(a < 0) a += mod; }
+// const ll mod = (ll)1e18 + 3;
+const int mod = 1e9 + 7;
+template <class c> void add_self(c & a, c b) { a += b; if(a >= mod) a -= mod; }
+template <class c> void sub_self(c & a, c b) { a -= b; if(a < 0) a += mod; }
 int mul(int a, int b) { return (ll) a * b % mod; }
-int my_pow(int a, int b) {
-	int r = 1;
+ll mul(ll a, ll b) {return (__int128) a * b % mod; }
+template <class c> c my_pow(c a, c b) {
+	c r = 1;
 	while(b) {
-		if(b % 2) r = mul(r, a);
+		if(b & 1) r = mul(r, a);
 		a = mul(a, a);
-		b /= 2;
+		b >>= 1;
 	}
 	return r;
 }
-int my_inv(int a) { return my_pow(a, mod - 2); }
-
-struct Massey {
-	vector<int> start, coef; // 3 optional lines
-	vector<vector<int>> powers;
-	int memo_inv;
+template <class c> c my_inv(c a) { return my_pow<c>(a, mod - 2); }
+template <class c> c negative (c a) {return (mod - a) % mod;}
+#if 0
+zet_p mul(zet_p a, zet_p b) {
+	return a * b;
+}
+void add_self(zet_p &a, zet_p b) {
+	a += b;
+}
+void sub_self(zet_p &a, zet_p b) {
+	a -= b;
+}
+zet_p my_inv(zet_p a) {return 1 / a;}
+zet_p negative(zet_p a) {return -a;}
+#endif
+template <class F> struct Massey {
+	vector<F> start, coef; // 3 optional lines
+	vector<vector<F>> powers;
+	F memo_inv;
 	
 	// Start here and write the next ~25 lines until "STOP"
 	
 	int L; // L == coef.size() <= start.size()
-	Massey(vector<int> in) { // O(N^2)
+	Massey(vector<F> in) { // O(N^2)
 		L = 0;
 		const int N = in.size();
-		vector<int> C{1}, B{1};
+		vector<F> C{1}, B{1};
 		for(int n = 0; n < N; ++n) {
-			assert(0 <= in[n] && in[n] < mod); // invalid input
+			// assert(0 <= in[n] && in[n] < mod); // invalid input
 			B.insert(B.begin(), 0);
-			int d = 0;
+			F d = 0;
 			for(int i = 0; i <= L; ++i)
 				add_self(d, mul(C[i], in[n-i]));
 			if(d == 0) continue;
-			vector<int> T = C;
+			vector<F> T = C;
 			C.resize(max(B.size(), C.size()));
 			for(int i = 0; i < (int) B.size(); ++i)
 				sub_self(C[i], mul(d, B[i]));
@@ -44,30 +56,30 @@ struct Massey {
 				L = n + 1 - L;
 				B = T;
 				d = my_inv(d);
-				for(int & x : B) x = mul(x, d);
+				for(F & x : B) x = mul(x, d);
 			}
 		}
 		cerr << "L = " << L << "\n";
 		assert(2 * L <= N - 2); // NO RELATION FOUND :(
 		// === STOP ===
 		for(int i = 1; i < (int) C.size(); ++i)
-			coef.push_back((mod - C[i]) % mod);
+			coef.push_back(negative(C[i]));
 		assert((int) coef.size() == L);
 		for(int i = 0; i < L; ++i)
 			start.push_back(in[i]);
-		while(!coef.empty() && !coef.back()) { coef.pop_back(); --L; }
+		while(!coef.empty() && coef.back() == 0) { coef.pop_back(); --L; }
 		if(!coef.empty()) memo_inv = my_inv(coef.back());
 		powers.push_back(coef);
 		//~ debug() << imie(coef);
 	}
 	
-	vector<int> mul_cut(vector<int> a, vector<int> b) {
-		vector<int> r(2 * L - 1);
+	vector<F> mul_cut(vector<F> a, vector<F> b) {
+		vector<F> r(2 * L - 1);
 		for(int i = 0; i < L; ++i)
 			for(int j = 0; j < L; ++j)
 				add_self(r[i+j], mul(a[i], b[j]));
 		while((int) r.size() > L) {
-			int value = mul(r.back(), memo_inv); // div(r.back(), coef.back());
+			F value = mul(r.back(), memo_inv); // div(r.back(), coef.back());
 			const int X = r.size();
 			add_self(r[X-L-1], value);
 			for(int i = 0; i < L; ++i)
@@ -77,27 +89,20 @@ struct Massey {
 		}
 		return r;
 	}
-	int get(ll k) { // O(L^2 * log(k))
+	F get(ll k) { // O(L^2 * log(k))
 		if(k < (int) start.size()) return start[k];
 		if(L == 0) return 0;
 		k -= start.size();
-		vector<int> vec = coef;
+		vector<F> vec = coef;
 		for(int i = 0; (1LL << i) <= k; ++i) {
 			if(i == (int) powers.size())
 				powers.push_back(mul_cut(powers.back(), powers.back()));
 			if(k & (1LL << i))
 				vec = mul_cut(vec, powers[i]);
 		}
-		int total = 0;
+		F total = 0;
 		for(int i = 0; i < L; ++i)
 			add_self(total, mul(vec[i], start[(int)start.size()-1-i]));
 		return total;
 	}
 };
-int main() {
-	// f[n] = 3 * f[n-1] + f[n-3] ---> coef: [3, 0, 1]
-	vector<int> in{10, 0, 1, 0, 0, 1, 3, 9, 28, 87};
-	Massey massey(in);
-	for(int i = 0; i < 30; ++i) printf("%d ", massey.get(i));
-	puts(""); // 10 0 ... 951398949 883208606 modulo 1e9+7
-}
