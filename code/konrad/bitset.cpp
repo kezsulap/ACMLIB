@@ -18,7 +18,7 @@ const int LOG = __builtin_ctz(SIZE);
 //Ustawia i na index w tablicy tab, mask na zbior bitow przecinajacych sie z przedzialem [l, r)
 //Wykonuje dla kazdego takiego ustawienia fragment code
 #define run(l, r, code...) { \
-	assert(l < r);\
+	assert(l <= r);\
 	int L = l >> LOG;\
 	int R = r >> LOG;\
 	int lmod = l & (SIZE - 1);\
@@ -30,12 +30,11 @@ const int LOG = __builtin_ctz(SIZE);
 	}\
 	else {\
 		ull mask = (~(ull)0 << lmod); \
-		int i = L;\
-		{code}\
+		{int i = L;{code}}\
 		mask = ~(ull)0;\
 		for (int i = L + 1; i < R; ++i) {code}\
 		if (rmod) {\
-			i = R;\
+			int i = R;\
 			mask = ~(~(ull)0 << rmod);\
 			{code}\
 		}\
@@ -70,9 +69,10 @@ int kth(ull mask, int num) {
 		}
 	assert(false);
 }
-//Zwraca k-ty zapalony bit (liczac od jedynki, od najmniejszych indeksow)
+//Zwraca k-ty zapalony bit (liczac od zera, od najmniejszych indeksow)
 template <size_t N>
 int kth_one(int k, const bitset<N> &b) {
+	k++;
 	for (int i = 0; i < (int)(N >> LOG); ++i) {
 		int c = __builtin_popcountl(b.tab[i]);
 		if (c < k) {
