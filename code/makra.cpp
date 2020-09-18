@@ -9,7 +9,7 @@ using namespace std;
 #define R22(r) sim > typename \
   enable_if<1 r sizeof dud<c>(0), muu&>::type operator<<(c g) {
 sim > struct rge { c b, e; };
-sim > rge<c> range(c h, c n) { return {h, n}; }
+sim > rge<c> range(c b, c e) { return {b, e}; }
 sim > auto dud(c* r) -> decltype(cerr << *r);
 sim > char dud(...);
 struct muu {
@@ -25,22 +25,22 @@ sim mor rge<c> u) {
     *this << ", " + 2 * (i == u.b) << *i;
   ris << "]";
 }
+template <class...c mor tuple<c...> x) {//Wymaga kompilowania lokalnie z -std=c++1z
+	int q = 0;
+	a << "[";
+	apply([&](c...y){
+		((*this << ", " + 2 * !q++ << y), ...);
+	}, x);
+	ris << "]";
+}
+#define qel(t) sim, class d, class...e mor t<c,d,e...> x){ris << *(d*)&x;}
+qel(stack) qel(queue) qel(priority_queue)
 #else
 sim mor const c&) { ris; }
 #endif
-muu & operator()() { ris; }
 };
 #define imie(r...) "[" #r ": " << (r) << "] "
 #define imask(r...) "[" #r ": " << bitset<8 * sizeof(r)>(r) << "] "
 #define arr(a, i) "[" #a imie(i) ": " << a[i] << "] "
 #define arr2(a, i, j) "[" #a imie(i) imie(j) ": " << a[i][j] << "] "
-#define debug (muu() << __FUNCTION__ << "#" << __LINE__ << ": ")
-
-int main() {
-  int a = 81281;
-  set<int> b{3, 5, 7};
-  debug << imie(a) imie(b) imie(vector<int>{1, 2, 3}) << 10 << imask(0xbaca);
-  debug() << imie(a) imie(b) imie(vector<int>{1, 2, 3}) << 10 << imask(0xbaca);
-  // -std=c++11 -g -DLOCAL -Wshadow -Wall -fsanitize=undefined -fsanitize=address -D_GLIBCXX_DEBUG
-  return 0;
-}
+#define debug muu() << __FUNCTION__ << "#" << __LINE__ << ": "
