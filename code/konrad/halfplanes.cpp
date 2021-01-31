@@ -1,4 +1,3 @@
-const int inf = 1e9;
 using pii = pair <int, int>;
 using ll = long long;
 pii operator-(pii a, pii b) {
@@ -16,9 +15,9 @@ ll ve(pii a, pii b) {
 }
 //wartości rzędu współrzędne ^ 4
 __int128 det(hpl a, hpl b, hpl c) {
-	return a.second * ve(b.first, c.first) +
-		b.second * ve(c.first, a.first) +
-		c.second * ve(a.first, b.first);
+	return a.second * (__int128)ve(b.first, c.first) +
+		b.second * (__int128)ve(c.first, a.first) +
+		c.second * (__int128)ve(a.first, b.first);
 }
 bool subset(hpl a, hpl b) {
 	if (ve(a.first, b.first) || sc(a.first, b.first) < 0) return false;
@@ -33,18 +32,20 @@ bool around(hpl a, hpl b, hpl c) {
 	ll bc = ve(b.first, c.first);
 	ll ca = ve(c.first, a.first);
 	assert(ab > 0 || bc > 0 || ca > 0);
-	return (ab >= 0 && bc >= 0 && ca >= 0);// || (ab <= 0 && bc <= 0 && ca <= 0);
+	return (ab >= 0 && bc >= 0 && ca >= 0) || (ab <= 0 && bc <= 0 && ca <= 0);
 }
 void ang_sort(vector <hpl> &a) {
 	if (a.empty()) return;
 	hpl mid = a.back();
 	a.pop_back();
 	vector <hpl> left, right;
-	for (hpl c : a)
-		if (ve(c.first, mid.first) > 0)
+	for (hpl c : a) {
+		ll v = ve(c.first, mid.first), s = sc(c.first, mid.first);
+		if (make_pair(v, s) > pair <ll, ll>(0, 0))
 			left.push_back(c);
 		else
 			right.push_back(c);
+	}
 	sort(right.begin(), right.end(), [](hpl x, hpl y){return ve(x.first, y.first) > 0;});
 	sort(left.begin(), left.end(), [](hpl x, hpl y){return ve(x.first, y.first) > 0;});
 	left.push_back(mid);
@@ -59,8 +60,9 @@ vector <hpl> find_hull(vector <hpl> vec) {
 	int first = 0;
 	ang_sort(vec);
 	for (hpl curr : vec) {
-		debug << imie(curr);
-		if (disjoint(curr, hull.back()))
+		if (!hull.empty() && disjoint(curr, hull.back()))
+			return {}; //Przecięcie jest puste
+		if (!hull.empty() && disjoint(curr, hull[first]))
 			return {}; //Przecięcie jest puste
 		if (!hull.empty() && subset(hull.back(), curr)) //Case kiedy jedna półpłaszczyzna zawiera się w drugiej, na ogół można wywalić
 			continue;
@@ -69,18 +71,14 @@ vector <hpl> find_hull(vector <hpl> vec) {
 		while (hull.size() - first >= 2u && det(hull.back(), *(hull.end() - 2), curr) <= 0) {
 			if (around(hull[hull.size() - 2], hull.back(), curr))
 				return {}; //Przecięcie jest puste
-			else {
-				debug << "erase " << imie(hull.back());
+			else
 				hull.pop_back();
-			}
 		}
 		while (hull.size() - first >= 2u && det(curr, hull[first], hull[first + 1]) >= 0) {
 			if (around(curr, hull[first], hull[first + 1]))
 				return {}; //Przecięcie jest puste
-			else {
-				debug << "erase " << arr(hull, first);
+			else
 				first++;
-			}
 		}
 		if (hull.size() - first < 2u || det(hull.back(), curr, hull[first]) < 0)
 			hull.push_back(curr);
