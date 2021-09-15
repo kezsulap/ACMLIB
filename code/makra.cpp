@@ -27,11 +27,11 @@ sim mor rge<c> u) {
 }
 template <class...c mor tuple<c...> x) {//Wymaga kompilowania lokalnie z -std=c++1z
 	int q = 0;
-	a << "[";
+	a << "(";
 	apply([&](c...y){
 		((*this << ", " + 2 * !q++ << y), ...);
 	}, x);
-	ris << "]";
+	ris << ")";
 }
 #define qel(t) sim, class d, class...e mor t<c,d,e...> x){ris << *(d*)&x;}
 qel(stack) qel(queue) qel(priority_queue)
@@ -40,7 +40,20 @@ sim mor const c&) { ris; }
 #endif
 };
 #define imie(r...) "[" #r ": " << (r) << "] "
+#define range(b, e) "[[" #b ", " #e "): " << range(b, e) << "] "
 #define imask(r...) "[" #r ": " << bitset<8 * sizeof(r)>(r) << "] "
 #define arr(a, i) "[" #a imie(i) ": " << a[i] << "] "
 #define arr2(a, i, j) "[" #a imie(i) imie(j) ": " << a[i][j] << "] "
+#define arr3(a, i, j, k) "[" #a imie(i) imie(j) imie(k) ": " << a[i][j][k] << "] "
+#define arr4(a, i, j, k, x) "[" #a imie(i) imie(j) imie(k) imie(x) ": " << a[i][j][k][x] << "] "
+#define fun(f, x...) "[" #f << make_tuple(x) << ": " << f(x) << "] "
 #define debug muu() << __FUNCTION__ << "#" << __LINE__ << ": "
+// struct foo {int a, int b};
+// muu &operator<<(muu &d, const foo &f) {
+	// return d << "foo(" << f.a << ", " << f.b << ")";
+// }
+// int main() {
+	// vector <pair <int, int> > a = {{1, 2}, {2, 3}, {3, 4}};
+	// int b = 2;
+	// debug imie(a) imask(10) arr(a, b) fun(atan2, 1, 3) range(a.begin(), a.begin() + 2);
+// }
