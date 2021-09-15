@@ -91,7 +91,7 @@ template<typename T>vector<T> multiply(const vector<T> & a, const vector<T> & b,
 			d1[i].imag /= n;
 		}
 		for (int i = 0; i < (int) ans.size(); ++i) {
-			ans[i] = (llround(d1[i].real) + llround(d2[i].real) * M + llround(d1[i].imag) % mod * (M * M)) % mod;
+			ans[i] = (llround(d1[i].real) + llround(d2[i].real) % mod * M + llround(d1[i].imag) % mod * (M * M)) % mod;
 		}
 	}
 	return ans;
