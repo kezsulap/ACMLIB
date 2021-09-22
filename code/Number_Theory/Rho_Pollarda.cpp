@@ -1,8 +1,15 @@
-//TODO: Add pot function implementation
 vector<ll> witness = {2, 325, 9375, 28178, 450775, 9780504, 1795265022}; // < 2^64
 //vector<ll> witness = {2, 7, 61}; // < 4759123141
 ll mnoz(ll a, ll b, ll mod) {return (__int128(a)*b)%mod;}
-ll pot(ll b, ll e, ll mod) {/*...*/}
+ll pot(ll b, ll e, ll mod) {
+	ll r = 1;
+	while (e) {
+		if (e & 1) r = mnoz(r, b, mod);
+		b = mnoz(b, b, mod);
+		e >>= 1;
+	}
+	return r;
+}
 bool test(ll n) {
   if (n == 2)
     return true;
