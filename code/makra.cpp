@@ -48,6 +48,10 @@ sim mor const c&) { ris; }
 #define arr4(a, i, j, k, x) "[" #a imie(i) imie(j) imie(k) imie(x) ": " << a[i][j][k][x] << "] "
 #define fun(f, x...) "[" #f << make_tuple(x) << ": " << f(x) << "] "
 #define debug muu() << __FUNCTION__ << "#" << __LINE__ << ": "
+using ll = long long; using ld = long double; using pii = pair <int, int>; using vi = vector <int>;
+using vpii = vector<pii>; using ull = unsigned long long; using unt = unsigned int; using pdd = pair <ld, ld>;
+using pll = pair <ll, ll>; using vll = vector <ll>; using mii = map <int, int>;
+sim> void mini(c &a, const c &b) {if (a > b) a = b;} sim> void maxi(c &a, const c &b) {if (a < b) a = b;}
 // struct foo {int a, int b};
 // muu &operator<<(muu &d, const foo &f) {
 	// return d << "foo(" << f.a << ", " << f.b << ")";
