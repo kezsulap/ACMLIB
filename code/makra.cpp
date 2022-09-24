@@ -3,10 +3,6 @@
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-#define pii pair<int, int>
-#define vi vector<int>
-#define ll long long
-#define ld long double
 #define st first
 #define nd second
 #define mp make_pair
