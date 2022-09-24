@@ -3,6 +3,18 @@
 #endif
 #include <bits/stdc++.h>
 using namespace std;
+#define pii pair<int, int>
+#define vi vector<int>
+#define ll long long
+#define ld long double
+#define st first
+#define nd second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define endl '\n'
+#define siz(c) (int)(c).size()
+#define all(c) (c).begin(), (c).end()
 #define sim template < class c
 #define ris return * this
 #define mor > muu & operator << (
