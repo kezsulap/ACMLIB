@@ -9,4 +9,4 @@ Keybindings:
 		Switch to VTE: F2
 Set Build Commands:
 	compile: g++ -Wall -o "%e" "%f" -g -O3 -std=c++1z
-	build: g++ -Wall -o "%e" "%f" -fsanitize=undefined -DLOCAL -D_GLIBCXX_DEBUG -g  -std=c++1z
+	build: g++ -Wall -o "%e" "%f" -fsanitize=undefined -fsanitize=address -DLOCAL -D_GLIBCXX_DEBUG -g  -std=c++1z
