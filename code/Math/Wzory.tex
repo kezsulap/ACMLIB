@@ -45,4 +45,8 @@ $S_j = \sum\limits_{1\leq i_1<i_2<\ldots<i_j\leq n} \mid A_{i_1}\cap A_{i_2} \ca
 $\sum\limits_{j\geq k}{j \choose k}(-1)^{j + k}S_j$ - liczba elementów należących do dokładnie $k$ zbiorów\\
 $\sum\limits_{j\geq k}{j - 1 \choose k - 1}(-1)^{j + k}S_j$ - liczba elementów należących do co najmniej $k$ zbiorów.
 
+Zaczynając w punkcie $0$, idąc w każdym ruchu o $-1$ z prawdopodobieństwem $p$ i o $+1$ z $1 - p$, kończąc w $-A$ lub $B$ prawdopodobieństwo dojścia do $B$ wynosi
+$\frac{1 + r + r^2 + \ldots + r^{A - 1}}{1 + r + r^2 + \ldots + r^{A + B - 1}} = \frac{1 - r^A}{1 - r^{A + B}}^* = 1 - \frac{1 + r' + r'^2 + \ldots + r'^{B - 1}}{1 + r' + r'^2 + \ldots + r'^{A + B - 1}} = 1 - \frac{1 - r'^B}{1 - r'^{A + B}}*,$ \\ (*działa o ile $p \neq \frac12$) gdzie $r = \frac{p}{1 - p}, r' = \frac1r$, dla $p=\frac12$ równe $\frac{A}{A+B}$
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
