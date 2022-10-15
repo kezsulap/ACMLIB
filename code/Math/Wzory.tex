@@ -48,5 +48,6 @@ $\sum\limits_{j\geq k}{j - 1 \choose k - 1}(-1)^{j + k}S_j$ - liczba elementów 
 Zaczynając w punkcie $0$, idąc w każdym ruchu o $-1$ z prawdopodobieństwem $p$ i o $+1$ z $1 - p$, kończąc w $-A$ lub $B$ prawdopodobieństwo dojścia do $B$ wynosi
 $\frac{1 + r + r^2 + \ldots + r^{A - 1}}{1 + r + r^2 + \ldots + r^{A + B - 1}} = \frac{1 - r^A}{1 - r^{A + B}}^* = 1 - \frac{1 + r' + r'^2 + \ldots + r'^{B - 1}}{1 + r' + r'^2 + \ldots + r'^{A + B - 1}} = 1 - \frac{1 - r'^B}{1 - r'^{A + B}}*,$ \\ (*działa o ile $p \neq \frac12$) gdzie $r = \frac{p}{1 - p}, r' = \frac1r$, dla $p=\frac12$ równe $\frac{A}{A+B}$
 
-
+Dla $x_1, x_2, \ldots, x_n$ macierz $a_{i,j}=x_i^{j - 1}$ ma wyznacznik $\prod\limits_{i<j}(x_j - x_i)$ i odwrotność
+$b_{i,j} = (-1)^i\frac{\sum\limits_{A \subset [n]\setminus \lbrace j \rbrace, |A| = n - i}\prod\limits_{k \in A} x_k}{\prod\limits_{k\neq j}(x_k - x_j)}$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
