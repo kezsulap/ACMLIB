@@ -108,7 +108,16 @@ cp = code_parser.CodeParser(options)
 
 files = []
 
-for filename, lang, style in FindAllSourceCode(options['code_dir']):
+try:
+	with open('FILES', 'r') as f:
+		all_sources = [CheckFileType(x) for x in f.read().split('\n') if x.strip() and x.strip()[0] != '#']
+		from_file = True
+except FileNotFoundError:
+	all_sources = FindAllSourceCode(options['code_dir'])
+	from_file = False
+
+
+for filename, lang, style in all_sources:
 	files.append({"filename": filename,
 	              "lang":     lang,
 	              "style":    style})
@@ -131,7 +140,8 @@ def key_to_compare(f):
 			# assert False
 	return (directory, basename.lower())
 
-files.sort(key=key_to_compare)
+if not from_file:
+	files.sort(key=key_to_compare)
 
 for f in files:
 	new_options = dict(options)
