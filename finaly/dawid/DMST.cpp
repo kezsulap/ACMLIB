@@ -1,20 +1,20 @@
 struct RollbackUF {
-  vector<int> e;
-  vector<pair<int, int> > st;
+  vi e;
+  vpii st;
   RollbackUF(int n) : e(n, -1) {}
   int size(int x) { return -e[find(x)]; }
   int find(int x) { return e[x] < 0 ? x : find(e[x]); }
-  int time() { return st.size(); }
+  int time() { return siz(st); }
   void rollback(int t) {
-    for (int i = time(); i-- > t;) e[st[i].first] = st[i].second;
+    for (int i = time(); i-- > t;) e[st[i].first] = st[i].nd;
     st.resize(t);
   }
   bool unite(int a, int b) {
     a = find(a), b = find(b);
     if (a == b) return false;
     if (e[a] > e[b]) swap(a, b);
-    st.push_back({a, e[a]});
-    st.push_back({b, e[b]});
+    st.pb({a, e[a]});
+    st.pb({b, e[b]});
     e[a] += e[b];
     e[b] = a;
     return true;
@@ -50,7 +50,7 @@ void pop(Node*& a) {
   a->prop();
   a = merge(a->l, a->r);
 } // wierzcholki numerujemy od 0, r to korzen dmst
-pair<ll, vector<int>> dmst(int n, int r, vector<Edge>& g) {
+pair<ll, vi> dmst(int n, int r, vector<Edge>& g) {
   RollbackUF uf(n);
   vector<Node*> heap(n);
   for (Edge e : g) heap[e.b] = merge(heap[e.b], new Node{e});
