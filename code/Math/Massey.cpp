@@ -1,41 +1,16 @@
-//~ https://en.wikipedia.org/wiki/Berlekamp%E2%80%93Massey_algorithm
-// const ll mod = (ll)1e18 + 3;
-const int mod = 1e9 + 7;
+const int mod = 1e9 + 7; // const ll mod = (ll)1e18 + 3;
 template <class c> void add_self(c & a, c b) { a += b; if(a >= mod) a -= mod; }
 template <class c> void sub_self(c & a, c b) { a -= b; if(a < 0) a += mod; }
 int mul(int a, int b) { return (ll) a * b % mod; }
 ll mul(ll a, ll b) {return (__int128) a * b % mod; }
-template <class c> c my_pow(c a, c b) {
-	c r = 1;
-	while(b) {
-		if(b & 1) r = mul(r, a);
-		a = mul(a, a);
-		b >>= 1;
-	}
-	return r;
-}
+template <class c> c my_pow(c a, c b) {/*...*/}
 template <class c> c my_inv(c a) { return my_pow<c>(a, mod - 2); }
 template <class c> c negative (c a) {return (mod - a) % mod;}
-#if 0
-zet_p mul(zet_p a, zet_p b) {
-	return a * b;
-}
-void add_self(zet_p &a, zet_p b) {
-	a += b;
-}
-void sub_self(zet_p &a, zet_p b) {
-	a -= b;
-}
-zet_p my_inv(zet_p a) {return 1 / a;}
-zet_p negative(zet_p a) {return -a;}
-#endif
 template <class F> struct Massey {
 	vector<F> start, coef; // 3 optional lines
 	vector<vector<F>> powers;
 	F memo_inv;
-	
 	// Start here and write the next ~25 lines until "STOP"
-	
 	int L; // L == coef.size() <= start.size()
 	Massey(vector<F> in) { // O(N^2)
 		L = 0;
@@ -70,9 +45,7 @@ template <class F> struct Massey {
 		while(!coef.empty() && coef.back() == 0) { coef.pop_back(); --L; }
 		if(!coef.empty()) memo_inv = my_inv(coef.back());
 		powers.push_back(coef);
-		//~ debug() << imie(coef);
 	}
-	
 	vector<F> mul_cut(vector<F> a, vector<F> b) {
 		vector<F> r(2 * L - 1);
 		for(int i = 0; i < L; ++i)
@@ -103,6 +76,4 @@ template <class F> struct Massey {
 		F total = 0;
 		for(int i = 0; i < L; ++i)
 			add_self(total, mul(vec[i], start[(int)start.size()-1-i]));
-		return total;
-	}
-};
+		return total; } };

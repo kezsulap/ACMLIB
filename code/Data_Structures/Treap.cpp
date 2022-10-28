@@ -1,71 +1,56 @@
 struct node {
-	int roz=1;
-	node *lew, *oj, *pra;
-	node() { lew=pra=oj=NULL; }
+  node *L, *R;
+  int ind, prior, sub, lazy; // sub opcjonalne
+  node(int ind) : L(0), R(0), ind(ind), prior(rand()), sub(1), lazy(0) {}
 };
-void update(node *v) {
-	if (v==NULL) return;
-	v->roz=1;
-	for (int h=0; h<2; h++) {
-		if (v->lew!=NULL) {
-			v->roz+=v->lew->roz;
-		}
-		swap(v->lew, v->pra);
-	}
+void rev(node* v) { // przykladowy update, odwraca kolejnosc w poddrzewie
+  v->lazy ^= 1;
+  swap(v->L, v->R);
 }
-node *merge(node *v, node *u) {
-	if (v==NULL) return u;
-	if (u==NULL) return v;	
-	if (rand()%(v->roz+u->roz)<(v->roz)) {
-		update(v);//czasem można usunąć
-		v->pra=merge(v->pra, u);
-		v->pra->oj=v;
-		update(v);
-		return v;
-	} else {
-		update(u);//czasem można usunąć
-		u->lew=merge(v, u->lew);
-		u->lew->oj=u;
-		update(u);
-		return u;
-	}
+void push(node* v) { // opcjonalne
+  if (v->lazy) {
+    if (v->L) rev(v->L);
+    if (v->R) rev(v->R);
+    v->lazy = 0;
+} }
+node* attach(node* v, node* l, node* r) {
+  v->L = l; // jesli chcemy trzymac ojca to update w tej funkcji
+  v->R = r;
+  v->sub = 1 + (l ? l->sub : 0) + (r ? r->sub : 0); // opcjonalne
+  return v;
 }
-pair <node*, node*> split(node *v, const function <bool(node*)> &is_left) {
-	if (v==NULL)
-		return make_pair(v, v);
-	pair <node*, node*> ret;
-	update(v);//czasem można usunąć
-	v->oj=NULL;
-	if (is_left(v)) {
-		ret=split(v->pra, is_left);
-		v->pra=ret.first;
-		if (v->pra!=NULL)
-			v->pra->oj=v;
-		ret.first=v;
-	} else {
-		ret=split(v->lew, is_left);
-		v->lew=ret.second;
-		if (v->lew!=NULL)
-			v->lew->oj=v;
-		ret.second=v;
-	}
-	update(v);
-	return ret;
+node* merge(node* v, node* u) {
+  if (!u) return v;
+  if (!v) return u;
+  push(v);
+  push(u);
+  if (v->prior > u->prior) return attach(v, v->L, merge(v->R, u));
+  else return attach(u, merge(v, u->L), u->R);
 }
-int gl_help;
-function <bool(node*)> cut_v(int v) {
-	gl_help=v;
-	return [](node *u)->bool {
-		int pom=1;
-		if (u->lew!=NULL) pom+=u->lew->roz;
-		if (pom>gl_help) return false;
-		gl_help-=pom;
-		return true;
-	};
-}
-int position(node *v) {
-	int ret=1;
-	if (v->lew!=NULL) ret+=v->lew->roz;
-	if (v->oj==NULL) return ret;
-	return position(v->oj)+ret-(v->oj->lew==v)*(v->roz+1);
+pair<node*, node*> split_size(node* v, int k) { // (prefiks rozmiaru k, reszta)
+  if (!v) return mp(v, v);
+  int lewo = v->L ? v->L->sub : 0;
+  push(v);
+  if (lewo >= k) {
+    auto s = split_size(v->L, k);
+    return mp(s.st, attach(v, s.nd, v->R));
+  } else {
+    auto s = split_size(v->R, k - lewo - 1);
+    return mp(attach(v, v->L, s.st), s.nd);
+} }
+pair<node*, node*> split_lex(node *v, int k) { // (ind <= k, reszta)
+  if (!v) return mp(v, v);
+  if (k < v->ind) {
+    auto s = split_lex(v->L, k);
+    return mp(s.st, attach(v, s.nd, v->R));
+  } else {
+    auto s = split_lex(v->R, k);
+    return mp(attach(v, v->L, s.st), s.nd);
+} }
+int find_pos(node *v, int val) { // -1 jesli nie ma
+  if (!v) return -1;
+  int lewo = v->L ? v->L->sub : 0;
+  if (v->ind == val) return 1 + lewo;
+  if (val < v->ind) return find_pos(v->L, val);
+  else return 1 + lewo + find_pos(v->R, val);
 }

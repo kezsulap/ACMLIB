@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 #define REP(i,n) for(int i = 0; i < int(n); ++i)
 /*Precision error max_ans/1e15 (2.5e18) for (long) doubles.
 So integer rounding works for doubles with answers 0.5*1e15,
@@ -11,13 +9,9 @@ typedef double ld; // 'long double' is 2.2 times slower
 struct C {
 	ld real, imag;
 	C operator * (const C & he) const {
-		return C{real * he.real - imag * he.imag,
-				real * he.imag + imag * he.real};
+		return C{real * he.real - imag * he.imag, real * he.imag + imag * he.real};
 	}
-	void operator += (const C & he) {
-		real += he.real; imag += he.imag;
-	}
-};
+	void operator += (const C & he) {real += he.real; imag += he.imag;} };
 void dft(vector<C> & a, bool rev) {
 	const int n = a.size();
 	for(int i = 1, k = 0; i < n; ++i) {
@@ -30,8 +24,7 @@ void dft(vector<C> & a, bool rev) {
 		if(om.empty()) {
 			om.resize(len);
 			const ld ang = 2 * acosl(0) / len;
-			REP(i, len) om[i] = i%2 || !who ?
-					C{cos(i*ang), sin(i*ang)} : t[who-1][i/2];
+			REP(i, len) om[i] = i%2 || !who?C{cos(i*ang), sin(i*ang)}:t[who-1][i/2];
 		}
 		for(int i = 0; i < n; i += 2 * len)
 			REP(k, len) {
@@ -43,7 +36,7 @@ void dft(vector<C> & a, bool rev) {
 	}
 	if(rev) REP(i, n) a[i].real /= n;
 }
-template<typename T>vector<T> multiply(const vector<T> & a, const vector<T> & b, bool split = false) {
+template<typename T>vector<T> multiply(const vector<T> &a, const vector<T> &b, bool split = false) {
 	if(a.empty() || b.empty()) return {};
 	int n = a.size() + b.size();
 	vector<T> ans(n - 1);
@@ -51,7 +44,6 @@ template<typename T>vector<T> multiply(const vector<T> & a, const vector<T> & b,
 		REP(i, a.size()) REP(j, b.size()) ans[i+j] += a[i]*b[j];
 		return ans; } */
 	while(n&(n-1)) ++n;
-	// http://codeforces.com/blog/entry/48417
 	auto speed = [&](const vector<C> & w, int i, int k) {
 		int j = i ? n - i : 0, r = k ? -1 : 1;
 		return C{w[i].real + w[j].real * r, w[i].imag
@@ -66,7 +58,6 @@ template<typename T>vector<T> multiply(const vector<T> & a, const vector<T> & b,
 		dft(done, true);
 		REP(i, ans.size()) ans[i] = is_integral<T>::value ?
 				llround(done[i].real) : done[i].real;
-	//REP(i,ans.size())err=max(err,abs(done[i].real-ans[i]));
 	}
 	else {
 		const int M = 1 << 15;
@@ -87,30 +78,10 @@ template<typename T>vector<T> multiply(const vector<T> & a, const vector<T> & b,
 		}
 		dft(d1, true);
 		dft(d2, true);
-		for (int i = 0; i < n; ++i) {
+		for (int i = 0; i < n; ++i)
 			d1[i].imag /= n;
-		}
-		for (int i = 0; i < (int) ans.size(); ++i) {
+		for (int i = 0; i < (int) ans.size(); ++i)
 			ans[i] = (llround(d1[i].real) + llround(d2[i].real) % mod * M + llround(d1[i].imag) % mod * (M * M)) % mod;
-		}
 	}
 	return ans;
-}
-
-typedef long long ll;
-int main() {
-	REP(_, 1) {
-		const int n = 500 * 1000;
-		const int M = 30123;
-		vector<ll> a, b;
-		for(int i = 0; i < n; ++i) {
-			a.push_back(rand() % M);
-			b.push_back(rand() % M);
-		}
-		auto ans = multiply(a, b, 0);
-		for(int i = 0; i < min(10, (int) ans.size()); ++i)
-			cout << ans[i] << " ";
-		cout << "\n";
-	}
-	//~ printf("%.10Lf\n", (long double) err);
 }

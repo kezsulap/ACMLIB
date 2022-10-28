@@ -1,16 +1,11 @@
 struct Splay {
   Splay *l = 0, *r = 0, *p = 0;
   bool flip = false; // Wywal jak nie używasz make_root.
-  int roz = 1;       // SUBTREE  Rozmiar poddrzewa. Wszystko z SUBTREE opcjonalne.
-  int axroz = 1;    // SUBTREE  Pomocniczny rozmiar poddrzewa.
   void update() {
-    assert(!flip and (!l or !l->flip) and (!r or !r->flip));
-    axroz = roz;               // SUBTREE
-    if (l) axroz += l->axroz;  // SUBTREE
-    if (r) axroz += r->axroz;  // SUBTREE
-  }
-  void touch() {
-    if (flip) {
+		//update anything stored for nodes
+    assert(!flip and (!l or !l->flip) and (!r or !r->flip)); }
+  void touch() { //Do any lazy prop here
+    if (flip) { 
       swap(l, r);
       if (l) l->flip = !l->flip;
       if (r) r->flip = !r->flip;
@@ -29,10 +24,7 @@ struct Splay {
     else t->connect(this, f == t->l);
     f->update();
   }
-  void push() {
-    sroot() ? touch() : p->push();
-    if (l) l->touch(); if (r) r->touch();
-  }
+  void push(){sroot()?touch():p->push();if (l) l->touch();if (r) r->touch();}
   void splay() {
     push();
     while (!sroot()) {
@@ -42,12 +34,10 @@ struct Splay {
     }   
     update();
   }
-  Splay* expose() {    // v będzie korzeniem splaya zawierającego ścieżkę do korzenia. Prawe dziecko 
-    Splay *q = this, *x = 0;  // będzie nullem. Jak zejdziemy w dół, to potem trzeba zrobić splay(). 
-    while (q) {                                          // LCA(u, v): u->expose(); ret v->expose();
-      q->splay();
-      if (q->r) q->roz += q->r->axroz;  // SUBTREE
-      if (x) q->roz -= x->axroz;        // SUBTREE
+  Splay* expose(){//v będzie korzeniem splaya zawierającego ścieżkę do korzenia
+    Splay *q = this, *x = 0;//prawe dziecko będzie nullem. Jak zejdziemy w dół, 
+    while (q) {  // to potem trzeba zrobić splay().
+      q->splay();// LCA(u, v): u->expose(); return v->expose();
       q->r = x;  q->update();
       x = q;  q = q->p;
     }
@@ -70,7 +60,6 @@ struct Splay {
   void link(Splay* to) {
     expose(); assert(!l /* Jest rootem. */);
     p = to;
-    p->expose();  p->roz += axroz;  p->axroz += axroz;  // SUBTREE
   }
   // Sprawia, że wierzchołek jest rootem w logicznym i w splayowym drzewie.
   void make_root() { expose(); flip = !flip; touch(); }

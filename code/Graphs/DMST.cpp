@@ -1,103 +1,89 @@
-#define int ll//jeśli long longi potrzebne
-struct DMST {
-  int N;
-  vector<int> eFrom, eTo, eCost, ePrev, visited, cycle, parent;
-  vector<vector<int>> cycles, adj, curEdge;
-  int Root, fstEdge;
-  DMST(int V) : N(V), visited(2*V), parent(2*V), cycles(2*V), adj(2*V),
-        curEdge(2*V, vector<int>(2*V, -1)) {}
-  void addEdge(int u, int v, int c, int prev = -1) {
-    if (prev != -1) {
-      if (curEdge[u][v] != -1) {
-        int id = curEdge[u][v];
-        if (eCost[id] > c) { eCost[id] = c; ePrev[id] = prev; }
-        return;
-      }
-    }
-    int id = (int)eFrom.size();
-    if (u == v) {
-      u = v = c = -1;
-    } else {
-      adj[u].push_back(id);
-      curEdge[u][v] = id;
-    }                                    //numeracja od zera
-    eFrom.push_back(u);
-    eTo.push_back(v);
-    eCost.push_back(c);
-    ePrev.push_back(prev);
+struct RollbackUF {
+  vi e;
+  vpii st;
+  RollbackUF(int n) : e(n, -1) {}
+  int size(int x) { return -e[find(x)]; }
+  int find(int x) { return e[x] < 0 ? x : find(e[x]); }
+  int time() { return siz(st); }
+  void rollback(int t) {
+    for (int i = time(); i-- > t;) e[st[i].first] = st[i].nd;
+    st.resize(t);
   }
-  bool dfsCyc(int v) {
-    if (v == Root) { return false; }
-    visited[v] = 1;
-    cycle.push_back(parent[v]);
-    int p = eFrom[parent[v]];
-    if (visited[p] == 1) { fstEdge = parent[p]; }
-    bool res = visited[p] == 1 || (!visited[p] && dfsCyc(p));
-    visited[v] = 2;
-    return res;
+  bool unite(int a, int b) {
+    a = find(a), b = find(b);
+    if (a == b) return false;
+    if (e[a] > e[b]) swap(a, b);
+    st.pb({a, e[a]});
+    st.pb({b, e[b]});
+    e[a] += e[b];
+    e[b] = a;
+    return true;
   }
-  vector<int> compute(int root) {
-    Root = root;
-    vector<bool> current(2 * N), onCycle(2 * N);
-    vector<int> best(2 * N);
-    fill_n(current.begin(), N, true);
-    int curSz = N;
-    while (true) {
-      fill(best.begin(), best.end(), Infty);
-      fill(onCycle.begin(), onCycle.end(), false);
-      for (int i = 0; i < 2 * N; i++) {
-        if (!current[i]) { continue; }
-        for (int e : adj[i]) {
-          int v = eTo[e], c = eCost[e];
-          if (v != root && current[v] && c < best[v]) {
-            best[v] = c; parent[v] = e;
-          }
-        }
-      }
-      fill(visited.begin(), visited.end(), 0);
-      for (int i = 0; i < 2 * N; i++) {
-        if (current[i] && !visited[i]) {
-          cycle.clear();
-          if (dfsCyc(i)) { break; } else { cycle.clear(); }
-        }
-      }
-      if (cycle.empty()) { break; }
-      cycle.erase(cycle.begin(), find(cycle.begin(), cycle.end(), fstEdge));
-      cycles[curSz] = cycle;
-      for (int v : cycle) { onCycle[eFrom[v]] = true; }
-      for (int v = 0; v < 2 * N; v++) {
-        if (!current[v]) { continue; }
-        vector<int> edges = adj[v];
-        for (int e : edges) {
-          int s = eTo[e], c = eCost[e];
-          if (!current[s]) { continue; }
-          if (!(onCycle[v] ^ onCycle[s])) { continue; }
-          if (onCycle[s]) { c -= best[s]; }
-          addEdge(onCycle[v] ? curSz : v, onCycle[s] ? curSz : s, c, e);
-        }
-      }
-
-      for (int v : cycle) { current[eFrom[v]] = false; }
-      current[curSz++] = true;
-    }
-    for (int cyc = curSz - 1; cyc >= N; cyc--) {
-      for (int v : cycles[cyc]) { parent[eTo[v]] = v; }
-      int e = ePrev[parent[cyc]];
-      parent[eTo[e]] = e;
-      for (int v = 0; v < 2 * N; v++) {
-        if (v != root && eFrom[parent[v]] == cyc) {
-          parent[v] = ePrev[parent[v]];
-        }
-      }
-    }
-    parent[root] = -1;
-    return vector<int>(parent.begin(), parent.begin() + N);
-  }
-  int getValue(vector<int> sol) {
-    int total = 0;
-    for (int i = 0; i < N; i++) { if (i != Root) { total += eCost[sol[i]]; } }
-    return total;
-  }
-  const int Infty = 1e9;
 };
-#undef int
+struct Edge {
+  int a, b;
+  ll w;
+};
+struct Node {  /// lazy skew heap node
+  Edge key;
+  Node *l, *r;
+  ll delta;
+  void prop() {
+    key.w += delta;
+    if (l) l->delta += delta;
+    if (r) r->delta += delta;
+    delta = 0;
+  }
+  Edge top() {
+    prop();
+    return key;
+  }
+};
+Node* merge(Node* a, Node* b) {
+  if (!a || !b) return a ?: b;
+  a->prop(), b->prop();
+  if (a->key.w > b->key.w) swap(a, b);
+  swap(a->l, (a->r = merge(b, a->r)));
+  return a;
+}
+void pop(Node*& a) {
+  a->prop();
+  a = merge(a->l, a->r);
+} // wierzcholki numerujemy od 0, r to korzen dmst
+pair<ll, vi> dmst(int n, int r, vector<Edge>& g) {
+  RollbackUF uf(n);
+  vector<Node*> heap(n);
+  for (Edge e : g) heap[e.b] = merge(heap[e.b], new Node{e});
+  ll res = 0;
+  vector<int> seen(n, -1), path(n), par(n);
+  seen[r] = r;
+  vector<Edge> Q(n), in(n, {-1, -1}), comp;
+  deque<tuple<int, int, vector<Edge>>> cycs;
+  for (int s = 0; s < n; ++s) {
+    int u = s, qi = 0, w;
+    while (seen[u] < 0) {
+      if (!heap[u]) return {-1, {}};
+      Edge e = heap[u]->top();
+      heap[u]->delta -= e.w, pop(heap[u]);
+      Q[qi] = e, path[qi++] = u, seen[u] = s;
+      res += e.w, u = uf.find(e.a);
+      if (seen[u] == s) {  /// found cycle, contract
+        Node* cyc = 0;
+        int end = qi, time = uf.time();
+        do cyc = merge(cyc, heap[w = path[--qi]]);
+        while (uf.unite(u, w));
+        u = uf.find(u), heap[u] = cyc, seen[u] = -1;
+        cycs.push_front({u, time, {&Q[qi], &Q[end]}});
+      }
+    }
+    for (int i = 0; i < qi; ++i) in[uf.find(Q[i].b)] = Q[i];
+  }
+  for (auto& [u, t, comp] : cycs) {  // restore sol (optional)
+    uf.rollback(t);
+    Edge inEdge = in[u];
+    for (auto& e : comp) in[uf.find(e.b)] = e;
+    in[uf.find(inEdge.b)] = inEdge;
+  }
+  for (int i = 0; i < n; ++i) par[i] = in[i].a;
+  return {res, par};
+}

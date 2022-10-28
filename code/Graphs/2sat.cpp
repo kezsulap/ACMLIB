@@ -1,4 +1,3 @@
-//TODO: wrap into struct
 const int nax = 100000;
 vector <int> implies[2*nax]; //wymuszenia, 2*x to zmienna 2*x+1 to jej negacja
 int sat_val[2*nax],sat_vis[2*nax],sat_sort[2*nax],sat_ile;
