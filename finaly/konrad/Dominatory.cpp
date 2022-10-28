@@ -12,17 +12,13 @@ struct Dominators {
     if (ancestor[ancestor[v]] != 0) {
       COMPRESS(ancestor[v]);
       if (semi[label[ancestor[v]]] < semi[label[v]]) label[v] = label[ancestor[v]];
-      ancestor[v]=ancestor[ancestor[v]];
-    }
-  }
+      ancestor[v]=ancestor[ancestor[v]]; } }
   void LINK(int v, int w) { ancestor[w]=v; }
   int EVAL(int v) {
     if(ancestor[v] == 0) return v;
     else {
       COMPRESS(v);
-      return label[v];
-    }
-  }
+      return label[v];} }
   void DFS(int v) {
     semi[v] = ++n; vertex[n] = v;
     for(auto ng : succ[v]) {
@@ -30,9 +26,7 @@ struct Dominators {
         parent[ng]=v;
         DFS(ng);
       }
-      pred[ng].push_back(v);
-    }
-  }
+      pred[ng].push_back(v); } }
   // Zwraca vector dominatorow (-1 dla 0). // Wszystko numerowane od 0, 
   vector<int> doit() {  // wszystko musi być osiągalne z 0.
     iota(label.begin(), label.end(), 0); 
@@ -60,6 +54,4 @@ struct Dominators {
     dom[1] = 0;
     vector<int> res(n_orig);
     for (int i = 0; i < n_orig; ++i) res[i] = dom[i + 1] - 1;
-    return res;
-  }
-};
+    return res; } };

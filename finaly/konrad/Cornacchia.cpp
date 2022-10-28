@@ -1,14 +1,11 @@
 using T = int;         // Typ, w którym mieści się modulo.
 using T2 = long long;  // Typ, w którym mieści się kwadrat modulo.
-// Dla pierwszego p > 2, potrafi szukać pierwiastków modulo p.
-class Pierwiastek {  // Jeśli kod ma być używany dla stałego p, to warto p
- public:             // przekazać jako argument template'a, a nie konstruktora.
-  Pierwiastek(T p) : s(0), p(p), m(p - 1) {
+struct Pierwiastek {// Dla pierwszego p > 2, szuka pierwiastków modulo p.
+  Pierwiastek(T p) : s(0), p(p), m(p - 1) {//template <int p> jeśli stałe p
     assert(p > 2);
     while (m % 2 == 0) { m /= 2; s++; }
     c = 2;
-    while (Pot(c, p / 2) == 1)
-      c = rand() % (p - 1) + 1;  // Uwaga, rand() musi zwracać wartości rzędu p.
+    while (Pot(c, p / 2) == 1) c = rand() % (p - 1) + 1;//rand() musi być duży
   }
   T Pot(T a, T pot) const {
 		T r = 1;
@@ -37,9 +34,8 @@ class Pierwiastek {  // Jeśli kod ma być używany dla stałego p, to warto p
     }
     return v;  // Pierwiastkami liczby a są: {v, (p - v) % p}.
   }
- private:
-  int s;
-  T p, m, c;
+ private:  int s;
+	  T p, m, c;
 };
 template<class num_t>
 inline num_t isqrt(num_t k) {

@@ -1,18 +1,8 @@
-using pii = pair <int, int>;
-using ll = long long;
-pii operator-(pii a, pii b) {
-	return {a.first - b.first, a.second - b.second};
-}
-pii rot(pii x) {
-	return {x.second, -x.first};
-}
+pii operator-(pii a, pii b) {return {a.first - b.first, a.second - b.second};}
+pii rot(pii x) {	return {x.second, -x.first}; }
 using hpl = pair <pii, ll>; //(v, m) = {x : sc(x, v) >= m}
-ll sc(pii a, pii b) {
-	return a.first * 1ll * b.first + a.second * 1ll * b.second;
-}
-ll ve(pii a, pii b) {
-	return a.first * 1ll * b.second - a.second * 1ll * b.first;
-}
+ll sc(pii a, pii b) {return a.first*1ll*b.first + a.second*1ll*b.second;}
+ll ve(pii a, pii b) {return a.first*1ll*b.second - a.second*1ll*b.first;}
 //wartości rzędu współrzędne ^ 4
 __int128 det(hpl a, hpl b, hpl c) {
 	return a.second * (__int128)ve(b.first, c.first) +
@@ -25,8 +15,7 @@ bool subset(hpl a, hpl b) {
 		a.second * (__int128) abs(b.first.second) >= b.second * (__int128) abs(a.first.second);
 }
 bool disjoint(hpl a, hpl b) {
-	return subset(a, {{-b.first.first, -b.first.second}, -b.second});
-}
+	return subset(a, {{-b.first.first, -b.first.second}, -b.second}); }
 bool around(hpl a, hpl b, hpl c) {
 	ll ab = ve(a.first, b.first);
 	ll bc = ve(b.first, c.first);

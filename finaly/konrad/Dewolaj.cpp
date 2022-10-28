@@ -13,14 +13,10 @@ struct P {
 	}
 };
 int cmpCircle(P a, P b, P c, P d) {
-	P v1 = b - a, v2 = d - a;
-	P v3 = b - c, v4 = d - c;
-	long double tmp = (long double)abs(v1.cross(v2)) * v3.dot(v4) +
-										(long double)v1.dot(v2) * abs(v3.cross(v4));
-	if (abs(tmp) < 1e-8) return 0;
-	if (tmp == 0) return 0;
-	if (tmp > 0) return 1;
-	return -1;
+	P v1 = b - a, v2 = d - a, v3 = b - c, v4 = d - c;
+	ld tmp=(ld)abs(v1.cross(v2))*v3.dot(v4)+(ld)v1.dot(v2)*abs(v3.cross(v4));
+	if (abs(tmp) < 1e-8) return 0;if (tmp == 0) return 0;
+	if (tmp > 0) return 1;return -1;
 }
 struct pair_hash {
 	template <class T1, class T2>
@@ -76,7 +72,7 @@ void anyTriangulation(vector<P> points) {
 	vector<P> upper, lower;
 	for (P C : points) {
 #define backback(w) w[(int)w.size() - 2]
-		while ((int)upper.size() >= 2 && backback(upper).cross(upper.back(), C) > 0) {
+		while ((int)upper.size() >= 2 && backback(upper).cross(upper.back(), C)>0){
 			addTriangle(C.id, backback(upper).id, upper.back().id);
 			upper.pop_back();
 		}
@@ -87,8 +83,8 @@ void anyTriangulation(vector<P> points) {
 		}
 		lower.push_back(C);
 #undef backback
-	}
-	if(lower.size()==upper.size()&&lower.size()==points.size())assert(false);//all collinear
+	}//all collinear
+	if(lower.size()==upper.size()&&lower.size()==points.size())assert(false);
 }
 const int nax = 1e6 + 5;
 int memo_x[nax], memo_y[nax];

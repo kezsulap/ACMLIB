@@ -7,9 +7,7 @@ struct Vizing {
   vector<vector<int>> color_queue;
   vector<int> unused_color;
   int N, M, K;
- 
   Vizing(int size) : adj(size), N(size), M(0) {}
- 
   void AddEdge(int u, int v) {
     adj[u].emplace_back(u, M);
     adj[v].emplace_back(v, M);
@@ -23,7 +21,6 @@ struct Vizing {
       answer=max(answer, (int)adj[i].size());
     return answer;
   }
- 
   void FindFree(int v) {
     while (!color_queue[v].empty()) {
       const int c = color_queue[v].back();
@@ -36,7 +33,6 @@ struct Vizing {
     }
     assert(false);
   }
- 
   void FlipPath(int from, int a, int b) {
     const int to = color_to[from][a];
     color_queue[from].push_back(a);
@@ -50,7 +46,6 @@ struct Vizing {
     FindFree(from);
     FindFree(to);
   }
- 
   void ColorEdge(int x, int y) {
     for (int col = 0; col <= K; ++col)
       if (color_to[x][col] == -1 && color_to[y][col] == -1) {
@@ -59,7 +54,6 @@ struct Vizing {
         FindFree(x); FindFree(y);
         return;
       }
- 
     vector<int> fan{y}, fan_colors{-1};
     vector<bool> has_on(N);
     const int c = unused_color[x];
@@ -95,7 +89,6 @@ struct Vizing {
     for (int v : fan) { FindFree(v); }
     FindFree(x);
   }
- 
   vector<int> ColorGraph() {
     K = MaxDegree();
     edge_colors = vector<int>(M, -1);

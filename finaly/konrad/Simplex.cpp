@@ -6,13 +6,11 @@ struct Simplex {        // Maximize c*x subject to Ax <= b.
   vector<int> eqIds, varIds, cols;
   T res;
   static constexpr T kEps = 1e-9;
-
   Simplex(int vars, int eqs) : A(eqs, vector<T>(vars)), b(eqs), c(vars),
       V(vars), E(eqs), eqIds(eqs), varIds(vars), res(0) {
     iota(varIds.begin(), varIds.end(), 0);
     iota(eqIds.begin(), eqIds.end(), vars);
   }
-
   void pivot(int eq, int var) {
     T coef = 1 / A[eq][var];
     cols.clear();
@@ -32,7 +30,6 @@ struct Simplex {        // Maximize c*x subject to Ax <= b.
     res += q * b[eq];
     swap(varIds[var], eqIds[eq]);
   }
-
   bool solve() {
     while (true) {
       int eq = -1, var = -1;
@@ -56,7 +53,6 @@ struct Simplex {        // Maximize c*x subject to Ax <= b.
     }
     return true;
   }
-
   vector<T> getVars() { // Optimal assignment of variables.
     vector<T> result(V);
     for (int i = 0; i < E; i++) if (eqIds[i] < V) result[eqIds[i]] = b[i];
