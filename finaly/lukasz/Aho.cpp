@@ -1,8 +1,6 @@
-const int MAXN = 404, sigma = 26;
- 
+const int MAXN = 404, sigma = 26; 
 int term[MAXN], len[MAXN], to[MAXN][sigma], link[MAXN], sz = 1;
-void add_str(string s)
-{
+void add_str(string s) {
 	int cur = 0;
 	for(auto c: s)
 	{
@@ -15,9 +13,7 @@ void add_str(string s)
 	}
 	term[cur] = cur; 
 }
- 
-void push_links()
-{
+void push_links() {
 	int que[sz];
 	int st = 0, fi = 1;
 	que[0] = 0;
@@ -27,13 +23,10 @@ void push_links()
 		int U = link[V];
 		if(!term[V]) term[V] = term[U];
 		for(int c = 0; c < sigma; c++)
-			if(to[V][c])
-			{
+			if(to[V][c]) {
 				link[to[V][c]] = V ? to[U][c] : 0;
 				que[fi++] = to[V][c];
-			}
-			else
-			{
+			} else {
 				to[V][c] = to[U][c];
 			}
 	}

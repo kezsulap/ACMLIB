@@ -1,5 +1,4 @@
-#define int ll//jeśli long longi potrzebne
-struct GomoryHu {
+struct GomoryHu { // #define int ll//jeśli long longi potrzebne
   vector<vector< pair<int,int> >> graph, tree;
   vector<vector<int>> nodes;
   vector<bool> visited;                     //wymaga naszego dinica
@@ -66,5 +65,4 @@ struct GomoryHu {
           res.push_back({{nodes[i][0], nodes[P.first][0]}, P.second});
     return res;
   }
-};
-#undef int
+}; // #undef int
