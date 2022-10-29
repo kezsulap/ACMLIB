@@ -1,5 +1,4 @@
-#define int ll//jeśli long longi potrzebne
-struct SPFA{
+struct SPFA{ // #define int ll//jeśli long longi potrzebne
   int n; vector<int> odl, oj, czok;
   vector<vector<pair<int,int>>> d; vector<vector<int>> d2;
   const int inf = 1e9;
@@ -57,5 +56,4 @@ struct SPFA{
   void add_edge(int a, int b, int cost){
     d[a].push_back({b, cost});
   }
-};
-#undef int
+}; // #undef int

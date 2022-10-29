@@ -1,4 +1,3 @@
-//TODO: some comments on what those functions are
 struct suffix_automaton {
 	vector<map<char,int>> edges;
 	vector<int> link, length;
