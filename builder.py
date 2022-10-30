@@ -4,12 +4,12 @@ import sys
 
 options = {
 	'number_of_columns': 2,
-	'characters_in_a_row': 87,
+	'characters_in_a_row': 90,
 	'expandtab': 2,
 	'width': 297,
 	'height': 210,
-	'margin_top': 8,
-	'margin_bottom': 11,
+	'margin_top': 6,
+	'margin_bottom': 9,
 	'margin_left': 8,
 	'margin_middle': 4,
 	'margin_right': 8,

@@ -20,6 +20,7 @@ code/Graphs/DMST.cpp
 code/Graphs/Dominatory.cpp
 code/Graphs/HLD.cpp
 code/Graphs/Link_Cut.cpp
+code/Graphs/Low.cpp
 code/Graphs/Planarity_Check.cpp
 code/Graphs/Smulewicz.cpp
 code/Graphs/SSS.cpp
@@ -46,5 +47,6 @@ code/Strings/Graf_Podslow.cpp
 code/Strings/Lyndon.cpp
 code/Strings/Manacher.cpp
 code/Strings/Pref.cpp
+code/Strings/Suf.cpp
 code/Strings/Tablica_Sufiksowa_Log.cpp
 code/Strings/Ukkonen.cpp

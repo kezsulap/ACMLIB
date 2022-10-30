@@ -1,38 +1,31 @@
-template <typename Char>
-struct Ukkonen {
+template <typename Char> struct Ukkonen {
   // Musi być ściśle większe niż jakakolwiek długość słowa.
   static constexpr int kInfinity = numeric_limits<int>::max();
-
   struct Node {
     map<Char, pair<Node*, pair<int, int>>> transition;
     Node* suflink;
   };
-
   // Ta metoda jest wywoływana zawsze gdy tworzona jest krawędź {node}[a, +oo).
   void CreateLeafCallback(Node* node, int a) {
     // printf("CreateLeafCallback({%p}[%d, +oo))\n", node, a);
   }
-
   // Ta metoda jest wywoływana zawsze gdy krawędź {node}[a, b] zamienia się
   // w dwie krawędzie: {node}[a, c-1], {middle}[c, b].
   void SplitEdgeCallback(Node* node, int a, int b, Node* middle, int c) {
     // printf("SplitEdgeCallback({%p}[%d, %d] -> {%p}[%d, %d] + {%p}[%d, %d])\n",
     //       node, a, b, node, a, c - 1, middle, c, b);
   }
-
   // vector<unique_ptr<Node>> nodes_to_delete;  // Odkomentować w celu usuwania.
   Node* NewNode() {
     Node* node = new Node();
     // nodes_to_delete.insert(node);            // Odkomentować w celu usuwania.
     return node;
   }
-
   vector<Char> text;  // Słowo powinno zajmować indeksy [0..n-1].
   Node* root;
   Node* pin;
   Node* last_explicit_node;  // Ostatni wierzchołek ,,explicit''.
   int last_length;    // Liczba literek do ostatniego wierzchołka ,,implicit''.
-
   // "reserve" warto ustawić na maksymalną dlugość słowa, ale wcale nie trzeba.
   Ukkonen(const int reserve = 0) : root(nullptr), pin(nullptr) {
     text.reserve(reserve);
@@ -42,7 +35,6 @@ struct Ukkonen {
     last_explicit_node = root;
     last_length = 0;
   }
-
   void Canonize(Node** s, int* a, int b) {
     if (b < *a) return;
     pair<Node*, pair<int, int>> t = (*s)->transition[text[*a]];
@@ -60,7 +52,6 @@ struct Ukkonen {
       }
     }
   }
-
   bool TestAndSplit(Node* s, int a, int b, Char c, Node** ret) {
     if (a <= b) {
       pair<Node*, pair<int, int>>& t = s->transition[text[a]];
@@ -82,7 +73,6 @@ struct Ukkonen {
     *ret = s;
     return s->transition.find(c) != s->transition.end();
   }
-
   void Update(Node** s, int* a, int i) {
     Node* oldr = root;
     Node* r;
@@ -98,7 +88,6 @@ struct Ukkonen {
     }
     if (oldr != root) oldr->suflink = *s;
   }
-
   // Dodaje kolejną literę do drzewa.
   void AddLetter(Char z) {
     const int i = static_cast<int>(text.size());
@@ -109,7 +98,6 @@ struct Ukkonen {
     Update(&last_explicit_node, &last_length, i);
     Canonize(&last_explicit_node, &last_length, i);
   }
-
   // Zamienia wszystkie krawędzie: [x, +oo) -> [x, text.size()-1].
   void ClearInfinities(Node* node = nullptr) {
     if (node == nullptr) node = root;
@@ -120,14 +108,10 @@ struct Ukkonen {
     }
   }
 };
-
-template <typename Char>
-constexpr int Ukkonen<Char>::kInfinity;
-
+template <typename Char> constexpr int Ukkonen<Char>::kInfinity;
 int main() {  // Przykład użycia.
   string s = "abcdefgh#";
   Ukkonen<char> u(s.size() /* reserve */);
   for (char c : s) u.AddLetter(c);
   u.ClearInfinities();
-  return 0;
 }

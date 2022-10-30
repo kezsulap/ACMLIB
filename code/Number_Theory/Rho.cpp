@@ -46,7 +46,6 @@ ll factor(ll n) {
   while (true) {
     ll x = rand() % n, y = x, c = rand() % n;
     ll *px = seq, *py = seq, tim = 0, prd = 1;
-
     while (true) {
       *py++ = y = add(mul(y, y, n), c, n);
       *py++ = y = add(mul(y, y, n), c, n);
@@ -77,7 +76,6 @@ void init() {  // wywolujemy przed pierwsza faktoryzacja, raz na caly program
   for (int i = 2; i * i < maxp; ++i)
     if (!d[i])
       for (int j = i * i; j < maxp; j += i) d[j] = i;
-
   for (int i = 2; i < maxp; ++i)
     if (!d[i]) {
       d[i] = i;

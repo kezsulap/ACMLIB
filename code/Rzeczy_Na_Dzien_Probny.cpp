@@ -10,7 +10,6 @@ int Main() {
   printf("\n");
   return 0;
 }
-
 // 2. Czy rand() działa tak samo na sprawdzaczce.
 int Main() {
   srand(0x12345);
@@ -20,7 +19,6 @@ int Main() {
   assert(a == 1206605802 /* Tu wkleić wartość po uruchomieniu u siebie. */);
   return 0;
 }
-
 // 3. Sprawdzanie czasu.
 int Main() {
   while (clock() <= 0.690 * CLOCKS_PER_SEC);
@@ -28,7 +26,6 @@ int Main() {
   // sprawdzić dokładnego czasu wykonania, to można zbinsearchować time limit.
   return 0;
 }
-
 // 4. Sprawdzić czy time() zwraca różne wartości pomiędzy uruchomieniami.
 int Main() {
   switch (time(NULL) % 3) {
@@ -41,7 +38,6 @@ int Main() {
   }
   return 0;
 }
-
 // 5. Przetestować czy kompresja działa.
 // (...) <- Przepisać kompresję.
 int Main() {
@@ -55,7 +51,6 @@ int Main() {
     }
   }
 }
-
 // 6. Sprawdzić float128.
 // Oczekiwany output: 47.610000000.
 int Main() {
@@ -63,21 +58,16 @@ int Main() {
   printf("%.9lf\n", (double)(x*x));
   return 0;
 }
-
 // 7. Sprawdzić ordered_seta.
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-
 using namespace __gnu_pbds;
 using namespace std;
-
 template <typename T>
 using ordered_set =
     tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
 ordered_set<int> s;
-
 int Main() {
   s.insert(1);
   s.insert(2);

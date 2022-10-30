@@ -38,7 +38,6 @@ struct centro { // indeksowane od 0, par to drzewo centroidow
     int c = find_centroid(v, -1, sz[v]);
     vis[c] = true;
     par[c] = p;
- 
     for (int x: edges[c]) {
       if (!vis[x]) {
         init_centroid(x, c);

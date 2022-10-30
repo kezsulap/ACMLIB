@@ -1,0 +1,29 @@
+2D:
+1. Ogarnąć Woronoja/Delone w O(n log n)
+2. Przecięcie wielokątów wypukłych
+3. Wspólne "styczne" wielokątów wypukłych (niekoniecznie rozłącznych)
+4. Średnia odległość/kwadrat odległości punktów dla x ∊ X, y ∊ Y, gdzie X, Y mogą być odcinkami/wielokątami (trójkątami/prostokątami izotetycznymi)/okręgami/kołami/wycinkami kół/łukami
+5. Środeki ciężkości rozmaitych zbiorów
+6. Okrąg wyznaczony przez: 3 obiekty z kategorii punkt, prosta styczna/okrąg styczny
+7. Stożkowe:
+	a) wyznaczenie przez 5 punktów, 5 prostych, 4 punkty i prostą styczną w jednym z nich itd.
+	b) wyznaczanie prosto z definicji
+	c) przecięcia
+	d) długości fragmentów (wiadomo nie da się jawnym wzorem, ale jakimś szeregiem, który szybko
+		zbiega, czy coś)
+
+3D:
+1. Suma Mińkowskiego wielościanów wypukłych
+2. Sprawdzanie, czy punkt jest wewnątrz wielościanu
+3. Przecięcie wielościanów wypukłych
+4. Otoczka 3D
+5. Przecięcie półprzesztrzeni
+
+Na sferze:
+1. Styczne do okręgów z punktu
+2. Wspólne styczne do okręgów
+3. Przecięcie okręgów
+4. Jakiś odpowiednik otoczki wypukłej
+
+Pomocnicze:
+Dokładniejsze double? template <size_t exponent_bits, size_t fraction_bits>. Przeklepać na nie funkcje z cmath. 

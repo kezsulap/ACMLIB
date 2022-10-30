@@ -4,5 +4,5 @@ Keybindings:
 	Build: Compile: F8, Build: F9
 	Focus: Switch to Editor: F1, Switch to VTE: F2
 Set Build Commands:
-	compile: g++ -Wall -o "%e" "%f" -g -O3 -std=c++1z
-	build: g++ -Wall -o "%e" "%f" -fsanitize=undefined -fsanitize=address -DLOCAL -D_GLIBCXX_DEBUG -g  -std=c++1z
+	compile: g++ -Wall -Wshadow -o "%e" "%f" -g -O3 -std=c++1z
+	build: g++ -Wall -Wshadow -o "%e" "%f" -fsanitize=undefined -fsanitize=address -DLOCAL -D_GLIBCXX_DEBUG -g  -std=c++1z
