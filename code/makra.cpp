@@ -3,7 +3,9 @@
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-//st, nd, mp, pb, eb, endl, siz, all
+//st, nd, mp, pb, eb
+#define siz(c) ((int)(c).size())
+#define all(c) (c).begin(), (c).end()
 #define sim template < class c
 #define ris return * this
 #define mor > muu & operator << (
@@ -41,7 +43,8 @@ sim mor const c&) { ris; }
 #define imie(r...) "[" #r ": " << (r) << "] "
 #define range(b, e) "[[" #b ", " #e "): " << range(b, e) << "] "
 #define debug muu() << __FUNCTION__ << "#" << __LINE__ << ": "
-//using ll,ld,pii,vi,vpii,ull,pdd,
+#define endl '\n'
+//using ll,ld,pii,vi,vpii,ull,pdd
 sim> void mini(c &a, const c &b) {if (a > b) a = b;}
 sim> void maxi(c &a, const c &b) {if (a < b) a = b;}
 int32_t main() {ios_base::sync_with_stdio(0);	cin.tie(0);}
