@@ -1,24 +1,24 @@
 #define X real()
 #define Y imag()
-typedef complex<LL> P;
+typedef complex<ll> P;
 struct line {
-    LL a,b,c;
-    line(LL a_ = 0, LL b_ = 0, LL c_ = 0): a(a_), b(b_), c(c_) {} // <= 10^9
+    ll a,b,c;
+    line(ll a_ = 0, ll b_ = 0, ll c_ = 0): a(a_), b(b_), c(c_) {} // <= 10^9
     line (P const &A, P const &B): a(A.Y-B.Y), b(B.X-A.X), c(A.X*B.Y-A.Y*B.X) {} //pts <= 10^6
     line operator - () const {return line(-a, -b, -c); }
     bool up() const { return a?(a<0):(b>0);}
 };
-inline LL wek(line const &a, line const &b) {return a.a*b.b-a.b*b.a;}
+inline ll wek(line const &a, line const &b) {return a.a*b.b-a.b*b.a;}
 inline bool rown(line a, line b) {return wek(a,b) == 0;}
 inline bool pokr(line a, line b) {return rown(a,b) && a.a*b.c == b.a*a.c && a.b*b.c == b.b*a.c;}
 inline bool podobne(line a, line b) {return rown(a,b) && a.up() == b.up();}
-inline complex<LD> prosta_prosta(line a, line b) {
-    LL det = wek(a,b);
-    LL x =  -a.c*b.b+b.c*a.b;
-    LL y =  -a.a*b.c+a.c*b.a;
-    return complex<LD>(x,y)/(LD)det;
+inline complex<ld> prosta_prosta(line a, line b) {
+    ll det = wek(a,b);
+    ll x =  -a.c*b.b+b.c*a.b;
+    ll y =  -a.a*b.c+a.c*b.a;
+    return complex<ld>(x,y)/(ld)det;
 }
-inline LL weaker (line a, line b) { // czy a jest slabsze niz b
+inline ll weaker (line a, line b) { // czy a jest slabsze niz b
     assert(rown(a,b));
     if (abs(a.a) > abs(a.b)) return a.c*abs(b.a) -  b.c*abs(a.a);
     else return a.c*abs(b.b) -  b.c*abs(a.b);
@@ -29,7 +29,7 @@ struct Comp {
         return wek(a,b) > 0;
     }
 };
-const LD EPS = 1e-12;
+const ld EPS = 1e-12;
 struct przeciecie_polplaszczyzn {
     bool empty, pek;
     set<line, Comp> S;
@@ -43,8 +43,8 @@ struct przeciecie_polplaszczyzn {
             return false; 
         }
         if (wek(a,b) < 0) swap(a,b);
-        complex<LD> r = prosta_prosta(a,b);
-        LD v = r.X * c.a + r.Y * c.b + c.c;
+        complex<ld> r = prosta_prosta(a,b);
+        ld v = r.X * c.a + r.Y * c.b + c.c;
         if (wek(a,c) >=0  && wek(c,b) >=0 && v > -EPS) return true;
         if (wek(a,c) < 0  && wek(c,b) < 0) {
             if (v < -EPS) empty = true;
@@ -89,7 +89,7 @@ struct przeciecie_polplaszczyzn {
         if(siz(S) <= 4){
             vector<line> res(all(S));
             if (siz(res) == 2 && rown(res[0], res[1]) && weaker(res[0], -res[1])<0) return 0; 
-            REP(i, siz(res)) REP(j, i) if(pokr(res[i], res[j])) {
+            for (int i = 0; i < siz(res); ++i) for (int j = 0; j < i; ++j) if(pokr(res[i], res[j]))  {
                 if(siz(res) == 2) return 4;
                 if(siz(res) == 3) return 3;
                 if(siz(res) == 4 && pokr(res[0], res[2]) && pokr(res[1], res[3])) return 1;
