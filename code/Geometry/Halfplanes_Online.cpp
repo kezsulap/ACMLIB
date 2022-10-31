@@ -67,15 +67,15 @@ struct przeciecie_polplaszczyzn {
             S.erase(del);
         }
         //*it>p
-        if(SZ(S) >= 2 && it == S.end()) it = S.begin();
-        while(SZ(S) >= 2 && hide(l, *next(it), *it)) {
+        if(siz(S) >= 2 && it == S.end()) it = S.begin();
+        while(siz(S) >= 2 && hide(l, *next(it), *it)) {
             iter del = it;
             it = next(it);
             S.erase(del);
         }
         //*it<p
-        if(SZ(S) >= 2) it = prev(it);
-        while(SZ(S) >= 2 && hide(l, *prev(it), *it)) {
+        if(siz(S) >= 2) it = prev(it);
+        while(siz(S) >= 2 && hide(l, *prev(it), *it)) {
             iter del = it;
             it = prev(it);
             S.erase(del);
@@ -86,16 +86,16 @@ struct przeciecie_polplaszczyzn {
          5 - dodatnie (może nieskończone) pole (S.size() daje wowczas liczbę boków) */
     int type() {
         if(empty) return 0;
-        if(SZ(S) <= 4){
-            vector<line> res(ALL(S));
-            if (SZ(res) == 2 && rown(res[0], res[1]) && weaker(res[0], -res[1])<0) return 0; 
-            REP(i, SZ(res)) REP(j, i) if(pokr(res[i], res[j])) {
-                if(SZ(res) == 2) return 4;
-                if(SZ(res) == 3) return 3;
-                if(SZ(res) == 4 && pokr(res[0], res[2]) && pokr(res[1], res[3])) return 1;
+        if(siz(S) <= 4){
+            vector<line> res(all(S));
+            if (siz(res) == 2 && rown(res[0], res[1]) && weaker(res[0], -res[1])<0) return 0; 
+            REP(i, siz(res)) REP(j, i) if(pokr(res[i], res[j])) {
+                if(siz(res) == 2) return 4;
+                if(siz(res) == 3) return 3;
+                if(siz(res) == 4 && pokr(res[0], res[2]) && pokr(res[1], res[3])) return 1;
                 return 2;
             }
-            if(SZ(res) == 3 && pek) return 1;
+            if(siz(res) == 3 && pek) return 1;
         }
         return 5;
     }
