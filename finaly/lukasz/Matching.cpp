@@ -1,9 +1,9 @@
 struct Matching {
 	int n, tim = 0, top = 0;
-	vector <int> mat, fa, s, q, pre, vis, head;
-	vector <pair <int, int> > e;
+	vi mat, fa, s, q, pre, vis, head;
+	vpii e;
 	Matching(int N) : n(N + 1), mat(n, -1), fa(n), s(n), q(n), pre(n), vis(n), head(n, -1) {}
-	void edge_impl(int x, int y) {e.emplace_back(y, head[x]);head[x] = e.size() - 1;}
+	void edge_impl(int x, int y) {e.eb(y, head[x]);head[x] = siz(e) - 1;}
 	void add_edge(int x, int y) {edge_impl(x, y), edge_impl(y, x);}
 	int find(int x) {return x == fa[x] ? x : fa[x] = find(fa[x]);}
 	int lca(int x, int y) {
@@ -26,13 +26,13 @@ struct Matching {
 		}
 	}
 	bool match(int x) {
-		iota(fa.begin(), fa.end(), 0);
-		fill(s.begin(), s.end(), -1);
+		iota(all(fa), 0);
+		fill(all(s), -1);
 		s[q[0] = x] = 0;
 		top = 1;
 		for (int i = 0; i < top; ++i) {
-			for (int t = head[q[i]]; ~t; t = e[t].second) {
-				int y = e[t].first;
+			for (int t = head[q[i]]; ~t; t = e[t].nd) {
+				int y = e[t].st;
 				if (s[y] == -1) {
 					pre[y] = q[i];
 					s[y] = 1;

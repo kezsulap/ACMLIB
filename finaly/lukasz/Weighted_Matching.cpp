@@ -8,7 +8,7 @@ int n, n_x;
 edge g[N * 2][N * 2];
 int lab[N * 2], match[N * 2], slack[N * 2], st[N * 2], pa[N * 2];
 int flo_from[N * 2][N + 1], S[N * 2], vis[N * 2];
-vector<int> flo[N * 2];
+vi flo[N * 2];
 queue<int> q;
 int e_delta(const edge &e) { return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2; }
 void update_slack(int u, int x) {
@@ -22,17 +22,17 @@ void set_slack(int x) {
 }
 void q_push(int x) {
   if (x <= n) q.push(x);
-  else for (size_t i = 0; i < flo[x].size(); i++) q_push(flo[x][i]);
+  else for (int i = 0; i < siz(flo[x]); i++) q_push(flo[x][i]);
 }
 void set_st(int x, int b) {
   st[x] = b;
-  if (x > n) for (size_t i = 0; i < flo[x].size(); i++) set_st(flo[x][i], b);
+  if (x > n) for (int i = 0; i < siz(flo[x]); i++) set_st(flo[x][i], b);
 }
 int get_pr(int b, int xr) {
-  int pr = find(flo[b].begin(), flo[b].end(), xr) - flo[b].begin();
+  int pr = find(all(flo[b]), xr) - flo[b].begin();
   if (pr % 2 == 1) {
     reverse(flo[b].begin() + 1, flo[b].end());
-    return (int)flo[b].size() - pr;
+    return siz(flo[b]) - pr;
   } else return pr;
 }
 void set_match(int u, int v) {
@@ -68,16 +68,16 @@ void add_blossom(int u, int lca, int v) {
   if (b > n_x) ++n_x;
   lab[b] = 0, S[b] = 0;
   match[b] = match[lca];
-  flo[b].clear(); flo[b].push_back(lca);
+  flo[b].clear(); flo[b].pb(lca);
   for (int x = u, y; x != lca; x = st[pa[y]])
-    flo[b].push_back(x), flo[b].push_back(y = st[match[x]]), q_push(y);
+    flo[b].pb(x), flo[b].pb(y = st[match[x]]), q_push(y);
   reverse(flo[b].begin() + 1, flo[b].end());
   for (int x = v, y; x != lca; x = st[pa[y]])
-    flo[b].push_back(x), flo[b].push_back(y = st[match[x]]), q_push(y);
+    flo[b].pb(x), flo[b].pb(y = st[match[x]]), q_push(y);
   set_st(b, b);
   for (int x = 1; x <= n_x; ++x) g[b][x].w = g[x][b].w = 0;
   for (int x = 1; x <= n; ++x) flo_from[b][x] = 0;
-  for (size_t i = 0; i < flo[b].size(); i++) {
+  for (int i = 0; i < siz(flo[b]); i++) {
     int xs = flo[b][i];
     for (int x = 1; x <= n_x; ++x)
       if (g[b][x].w == 0 || e_delta(g[xs][x]) < e_delta(g[b][x]))
@@ -87,7 +87,7 @@ void add_blossom(int u, int lca, int v) {
   set_slack(b);
 }
 void expand_blossom(int b) {
-  for (size_t i = 0; i < flo[b].size(); ++i)
+  for (int i = 0; i < siz(flo[b]); ++i)
     set_st(flo[b][i], flo[b][i]);
   int xr = flo_from[b][g[b][pa[b]].u], pr = get_pr(b, xr);
   for (int i = 0; i < pr; i += 2) {
@@ -98,7 +98,7 @@ void expand_blossom(int b) {
     q_push(xns);
   }
   S[xr] = 1, pa[xr] = pa[b];
-  for (size_t i = pr + 1; i < flo[b].size(); i++) {
+  for (int i = pr + 1; i < siz(flo[b]); i++) {
     int xs = flo[b][i];
     S[xs] = -1, set_slack(xs);
   }
@@ -125,7 +125,7 @@ bool matching() {
   }
   if (q.empty()) return false;
   for (;;) {
-    while (q.size()) {
+    while (siz(q)) {
       int u = q.front(); q.pop();
       if (S[st[u]] == 1) continue;
       for (int v = 1; v <= n; v++) {
@@ -186,7 +186,7 @@ pair<long long, int> solve() {
       tot_weight += g[u][match[u]].w;
     }
   }
-  return make_pair(tot_weight, n_matches);
+  return mp(tot_weight, n_matches);
 }
 void add_edge(int u, int v, int w) {
   g[u][v].w = g[v][u].w = max(g[u][v].w, w);

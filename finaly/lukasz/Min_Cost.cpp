@@ -6,7 +6,7 @@ struct MinCost {
 	int n=0, zr, uj;
 	const ll inf=1e9;
 	vector <vector <kra>> graf;
-	vector <int> bylo, aktu;
+	vi bylo, aktu;
 	vector <ll> odl, pamodl;
 	void vert(int v) {
 		if (v>n) {
@@ -22,8 +22,8 @@ struct MinCost {
 		vert(v+1); vert(u+1);
 		kra ret1{u, new int(prze), new int(0), koszt};
 		kra ret2{v, ret1.prze2, ret1.prze1, -koszt};
-		graf[v].push_back(ret1);
-		graf[u].push_back(ret2);
+		graf[v].pb(ret1);
+		graf[u].pb(ret2);
 	}
 	void spfa() {
 		for (int i=0; i<n; i++) {
@@ -54,8 +54,8 @@ struct MinCost {
 		priority_queue < pair <ll,int> > dijks;
 		dijks.push({0, zr});
 		while(!dijks.empty()) {
-			ll dis=-dijks.top().first;
-			int v=dijks.top().second;
+			ll dis=-dijks.top().st;
+			int v=dijks.top().nd;
 			dijks.pop();
 			if (odl[v]!=inf)
 				continue;
@@ -69,7 +69,7 @@ struct MinCost {
 		if (v==uj)
 			return 1;
 		bylo[v]=1;
-		for (int i=0; i<(int)graf[v].size(); i++) {
+		for (int i=0; i< siz(graf[v]); i++) {
 			if (!bylo[graf[v][i].cel] && (*graf[v][i].prze1) &&
 			odl[v]+graf[v][i].koszt==odl[graf[v][i].cel] && dfs(graf[v][i].cel)) {
 				(*graf[v][i].prze1)--;
@@ -92,8 +92,8 @@ struct MinCost {
 				bylo[i]=0;
 			if (!dfs(zr))
 				break;
-			ret.first++;
-			ret.second+=odl[uj];
+			ret.st++;
+			ret.nd+=odl[uj];
 		}
 		return ret;
 	}

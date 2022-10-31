@@ -7,7 +7,7 @@ public:
 	void push(int h, int u) { next[u] = head[h], head[h] = u; }
 private:
 	int N;
-	vector<int> next, head;
+	vi next, head;
 };
 class DoublyLinkedList {
 private:
@@ -35,7 +35,7 @@ public:
 	}
 private:
 	int N;
-	vector<int> head;
+	vi head;
 	vector<Node> nodes;
 };
 template <
@@ -68,12 +68,12 @@ public:
 	}
 	inline void add_directed_edge(int u, int v, CapType cap) {
 		E++;
-		G[u].push_back({v, (int) G[v].size(), cap});
-		G[v].push_back({u, (int) G[u].size() - 1, 0});
+		G[u].pb({v, siz(G[v]), cap});
+		G[v].pb({u, siz(G[u]) - 1, 0});
 	}
 	inline void add_undirected_edge(int u, int v, CapType cap) {
-		G[u].push_back({v, (int) G[v].size(), cap});
-		G[v].push_back({u, (int) G[u].size() - 1, cap});
+		G[u].pb({v, siz(G[v]), cap});
+		G[v].pb({u, siz(G[u]) - 1, cap});
 	}
 private:
 	void global_relabel(int t) {
@@ -126,7 +126,7 @@ private:
 	}
 	int N, E, highest_active, highest;
 	vector< vector<Edge> > G;
-	vector<int> height, count, que;
+	vi height, count, que;
 	vector<TotalCapType> excess;
 	LinkedList list;
 	DoublyLinkedList dlist;
