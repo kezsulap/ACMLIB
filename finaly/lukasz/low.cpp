@@ -1,7 +1,7 @@
 struct Low { // dziala dla multikrawedzi, petli, niespojnego grafu
   int n, cnt, edges;
-  vector<vector<PII>> G;
-  VI low, pre, par, par_nr, used, most, root, vis_s, add_s;
+  vector<vpii> G;
+  vi low, pre, par, par_nr, used, most, root, vis_s, add_s;
   Low(int n) : n(n), edges(0) {
     G.resize(n + 1);
     low.resize(n + 1);
@@ -34,12 +34,12 @@ struct Low { // dziala dla multikrawedzi, petli, niespojnego grafu
   }
   void go() { // trzeba wywolac na poczatku!
     used.resize(edges + 1);
-    FOR(i, 1, n) if (!pre[i]) root[i] = 1, dfs(i);
+    for(int i = 1; i <= n; ++i) if (!pre[i]) root[i] = 1, dfs(i);
   }
-  vector<PII> mosty() {
+  vpii mosty() {
     most.resize(edges + 1);
-    vector<PII> ans;
-    FOR(i, 1, n) {
+    vpii ans;
+    for(int i = 1; i <= n; ++i) {
       if (!root[i] && low[i] == pre[i]) {
         ans.eb(i, par[i]);
         most[par_nr[i]] = 1;
@@ -47,23 +47,23 @@ struct Low { // dziala dla multikrawedzi, petli, niespojnego grafu
     }
     return ans;
   }
-  VI pkt_art() { // tylko jesli potrzebujemy
-    VI ans, take(n + 1), root_sons(n + 1);
-    FOR(i, 1, n) {
+  vi pkt_art() { // tylko jesli potrzebujemy
+    vi ans, take(n + 1), root_sons(n + 1);
+    for(int i = 1; i <= n; ++i) {
       if (par[i] && root[par[i]]) {
         ++root_sons[par[i]];
       }
     }
-    FOR(i, 1, n) {
+    for(int i = 1; i <= n; ++i) {
       if (root[i] && root_sons[i] >= 2) take[i] = 1;
       if (!root[i] && !root[par[i]] && low[i] >= pre[par[i]]) take[par[i]] = 1;
     }
-    FOR(i, 1, n) if (take[i]) ans.pb(i);
+    for(int i = 1; i <= n; ++i) if (take[i]) ans.pb(i);
     return ans;
   }
   // kod nizej tylko jesli potrzebujemy 2spojnych
-  using comps = vector<vector<PII>>; 
-  void dfs_s(int v, vector<PII> &moja) {
+  using comps = vector<vpii>; 
+  void dfs_s(int v, vpii &moja) {
     vis_s[v] = 1;
     for (auto it : G[v]) {
       int u = it.st;
@@ -81,9 +81,9 @@ struct Low { // dziala dla multikrawedzi, petli, niespojnego grafu
     add_s.resize(edges + 1);
     comps ans;
     for (auto it : mosty()) ans.pb({it});
-    FOR(i, 1, n) {
+    for(int i = 1; i <= n; ++i) {
       if (!vis_s[i]) {
-        vector<PII> curr;
+        vpii curr;
         dfs_s(i, curr);
         if (!curr.empty()) ans.pb(curr);
       }
