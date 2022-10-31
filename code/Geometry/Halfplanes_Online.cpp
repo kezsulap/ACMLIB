@@ -1,54 +1,42 @@
-// halfplanes_online
 #define X real()
 #define Y imag()
 typedef complex<LL> P;
-
 struct line {
     LL a,b,c;
     line(LL a_ = 0, LL b_ = 0, LL c_ = 0): a(a_), b(b_), c(c_) {} // <= 10^9
     line (P const &A, P const &B): a(A.Y-B.Y), b(B.X-A.X), c(A.X*B.Y-A.Y*B.X) {} //pts <= 10^6
-
     line operator - () const {return line(-a, -b, -c); }
     bool up() const { return a?(a<0):(b>0);}
 };
-
 inline LL wek(line const &a, line const &b) {return a.a*b.b-a.b*b.a;}
 inline bool rown(line a, line b) {return wek(a,b) == 0;}
 inline bool pokr(line a, line b) {return rown(a,b) && a.a*b.c == b.a*a.c && a.b*b.c == b.b*a.c;}
 inline bool podobne(line a, line b) {return rown(a,b) && a.up() == b.up();}
-
 inline complex<LD> prosta_prosta(line a, line b) {
     LL det = wek(a,b);
     LL x =  -a.c*b.b+b.c*a.b;
     LL y =  -a.a*b.c+a.c*b.a;
     return complex<LD>(x,y)/(LD)det;
 }
-
 inline LL weaker (line a, line b) { // czy a jest slabsze niz b
     assert(rown(a,b));
     if (abs(a.a) > abs(a.b)) return a.c*abs(b.a) -  b.c*abs(a.a);
     else return a.c*abs(b.b) -  b.c*abs(a.b);
 }
-
 struct Comp {
     bool operator()(const line& a, const line& b) const {
         if (a.up() != b.up()) return a.up() > b.up();
         return wek(a,b) > 0;
     }
 };
-
 const LD EPS = 1e-12;
-
 struct przeciecie_polplaszczyzn {
     bool empty, pek;
     set<line, Comp> S;
     typedef set<line, Comp>::iterator iter;
-
     przeciecie_polplaszczyzn() : empty(false), pek(false) {};
-
     iter next(iter it){return (++it == S.end() ? S.begin() : it);}
     iter prev(iter it){return (it == S.begin() ? --S.end() : --it);}
-
     bool hide(line a, line b, line c) {
         if (rown(a,b)) {
             if (weaker(a, -b) < 0) empty = true;
@@ -64,7 +52,6 @@ struct przeciecie_polplaszczyzn {
         }
         return false;
     }
-
     void add(line l) {
         if (empty) return;
         if (l.a == 0 && l.b == 0) {

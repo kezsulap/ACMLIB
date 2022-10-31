@@ -1,8 +1,9 @@
-template <typename Char> struct Ukkonen {
+template <typename Char>
+struct Ukkonen {
   // Musi być ściśle większe niż jakakolwiek długość słowa.
   static constexpr int kInfinity = numeric_limits<int>::max();
   struct Node {
-    map<Char, pair<Node*, pair<int, int>>> transition;
+    map<Char, pair<Node*, pii>> transition;
     Node* suflink;
   };
   // Ta metoda jest wywoływana zawsze gdy tworzona jest krawędź {node}[a, +oo).
@@ -37,36 +38,36 @@ template <typename Char> struct Ukkonen {
   }
   void Canonize(Node** s, int* a, int b) {
     if (b < *a) return;
-    pair<Node*, pair<int, int>> t = (*s)->transition[text[*a]];
-    Node* sp = t.first;
-    int ap = t.second.first;
-    int bp = t.second.second;
+    pair<Node*, pii> t = (*s)->transition[text[*a]];
+    Node* sp = t.st;
+    int ap = t.nd.st;
+    int bp = t.nd.nd;
     while (bp - ap <= b - *a) {
       *a = *a + bp - ap + 1;
       *s = sp;
       if (*a <= b) {
         t = (*s)->transition[text[*a]];
-        sp = t.first;
-        ap = t.second.first;
-        bp = t.second.second;
+        sp = t.st;
+        ap = t.nd.st;
+        bp = t.nd.nd;
       }
     }
   }
   bool TestAndSplit(Node* s, int a, int b, Char c, Node** ret) {
     if (a <= b) {
-      pair<Node*, pair<int, int>>& t = s->transition[text[a]];
-      Node* sp = t.first;
-      int ap = t.second.first;
-      int bp = t.second.second;
+      pair<Node*, pii>& t = s->transition[text[a]];
+      Node* sp = t.st;
+      int ap = t.nd.st;
+      int bp = t.nd.nd;
       if (c == text[ap + b - a + 1]) {
         *ret = s;
         return true;
       }
       *ret = NewNode();
-      t.second.second = ap + b - a;
-      t.first = *ret;
+      t.nd.nd = ap + b - a;
+      t.st = *ret;
       (*ret)->transition[text[ap + b - a + 1]] =
-          make_pair(sp, make_pair(ap + b - a + 1, bp));
+          mp(sp, mp(ap + b - a + 1, bp));
       SplitEdgeCallback(s, ap, bp, *ret, ap + b - a + 1);
       return false;
     }
@@ -79,7 +80,7 @@ template <typename Char> struct Ukkonen {
     bool end = TestAndSplit(*s, *a, i - 1, text[i], &r);
     while (!end) {
       CreateLeafCallback(r, i);
-      r->transition[text[i]] = make_pair(nullptr, make_pair(i, kInfinity));
+      r->transition[text[i]] = mp(nullptr, mp(i, kInfinity));
       if (oldr != root) oldr->suflink = r;
       oldr = r;
       *s = (*s)->suflink;
@@ -90,11 +91,11 @@ template <typename Char> struct Ukkonen {
   }
   // Dodaje kolejną literę do drzewa.
   void AddLetter(Char z) {
-    const int i = static_cast<int>(text.size());
-    text.push_back(z);
+    const int i = siz(text);
+    text.pb(z);
     auto it = pin->transition.find(z);
     if (it == pin->transition.end())
-      pin->transition[z] = make_pair(root, make_pair(i, i));
+      pin->transition[z] = mp(root, mp(i, i));
     Update(&last_explicit_node, &last_length, i);
     Canonize(&last_explicit_node, &last_length, i);
   }
@@ -102,16 +103,18 @@ template <typename Char> struct Ukkonen {
   void ClearInfinities(Node* node = nullptr) {
     if (node == nullptr) node = root;
     for (auto& it : node->transition) {
-      if (it.second.second.second == kInfinity)
-        it.second.second.second = static_cast<int>(text.size()) - 1;
-      else ClearInfinities(it.second.first);
+      if (it.nd.nd.nd == kInfinity)
+        it.nd.nd.nd = siz(text) - 1;
+      else ClearInfinities(it.nd.st);
     }
   }
 };
-template <typename Char> constexpr int Ukkonen<Char>::kInfinity;
+template <typename Char>
+constexpr int Ukkonen<Char>::kInfinity;
 int main() {  // Przykład użycia.
   string s = "abcdefgh#";
   Ukkonen<char> u(s.size() /* reserve */);
   for (char c : s) u.AddLetter(c);
   u.ClearInfinities();
+  return 0;
 }

@@ -1,6 +1,6 @@
 code/makra.cpp
 code/geany-config
-code/Rzeczy_Na_Dzien_Probny.cpp
+code/Rzeczy_Na_Dzien_Probny.txt
 code/Data_Structures/OrderedSet.cpp
 code/Data_Structures/Treap.cpp
 code/Flows_And_Matchings/Dinic.cpp
@@ -13,6 +13,7 @@ code/Flows_And_Matchings/Turbo_Matching.cpp
 code/Flows_And_Matchings/Weighted_Matching.cpp
 code/Geometry/Dewolaj.cpp
 code/Geometry/Halfplanes.cpp
+code/Geometry/Halfplanes_Online.cpp
 code/Geometry/Rotor.cpp
 code/Graphs/2sat.cpp
 code/Graphs/Centroid.cpp
@@ -34,10 +35,12 @@ code/Math/Simplex.cpp
 code/Math/Simpson.cpp
 code/Math/Wzory.tex
 code/Miscellaneous/De_Bruijn.cpp
+code/Miscellaneous/Loops.cpp
 code/Number_Theory/Cornacchia.cpp
 code/Number_Theory/CRT.cpp
 code/Number_Theory/Euklides.cpp
 code/Number_Theory/Fibonacci_Cycle.txt
+code/Number_Theory/number_theory_data.txt
 code/Number_Theory/Phi.cpp
 code/Number_Theory/Pi.cpp
 code/Number_Theory/Rho.cpp
@@ -48,5 +51,4 @@ code/Strings/Lyndon.cpp
 code/Strings/Manacher.cpp
 code/Strings/Pref.cpp
 code/Strings/Suf.cpp
-code/Strings/Tablica_Sufiksowa_Log.cpp
 code/Strings/Ukkonen.cpp

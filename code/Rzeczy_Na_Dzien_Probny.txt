@@ -1,0 +1,12 @@
+1. __int128/__uint128_t
+2. Czy rand() działa tak samo na sprawdzaczce.
+3. while (clock() < 1.9 * CLOCKS_PER_SEC)
+4. Czy time(NULL) daje różne wartości między uruchomieniami
+5. Czy kompresja (wklejanie binarnych rzeczy do kodu) działa
+6. __float128
+7. ordered_set
+8. getchar_unlocked/_getchar_nolock
+9. Porównać czas działania sprawdzaczki i kompa
+10. gp_hash_table / cc_hash_table
+	#include <ext/pb_ds/assoc_container.hpp>
+	using namespace __gnu_pbds;

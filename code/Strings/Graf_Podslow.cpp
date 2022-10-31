@@ -1,18 +1,17 @@
-//TODO: some comments on what those functions are
 struct suffix_automaton {
 	vector<map<char,int>> edges;
-	vector<int> link, length;
+	vi link, length;
 	int last;
 	suffix_automaton(string s) {
-		edges.push_back(map<char,int>());
-		link.push_back(-1);
-		length.push_back(0);
+		edges.pb(map<char,int>());
+		link.pb(-1);
+		length.pb(0);
 		last = 0;
-		for (int i=0; i<(int)s.size(); i++) {
-			edges.push_back(map<char,int>());
-			length.push_back(i+1);
-			link.push_back(0);
-			int r = edges.size() - 1;
+		for (int i=0; i<siz(s); i++) {
+			edges.pb(map<char,int>());
+			length.pb(i+1);
+			link.pb(0);
+			int r = siz(edges) - 1;
 			int p = last;
 			while (p >= 0 && !edges[p].count(s[i])) {
 				edges[p][s[i]] = r;
@@ -24,10 +23,10 @@ struct suffix_automaton {
 					link[r] = q;
 				}
 				else {
-					edges.push_back(edges[q]);
-					length.push_back(length[p] + 1);
-					link.push_back(link[q]);
-					int qq = edges.size()-1;
+					edges.pb(edges[q]);
+					length.pb(length[p] + 1);
+					link.pb(link[q]);
+					int qq = siz(edges)-1;
 					link[q] = link[r] = qq;
 					while (p >= 0 && edges[p][s[i]] == q) {
 						edges[p][s[i]] = qq;

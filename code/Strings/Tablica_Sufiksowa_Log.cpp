@@ -4,38 +4,38 @@
 /* Wszystko indeksujemy od 1, ale podajemy wskaźnik na 0                      */
 
 struct suffix_array {
-  vector<pair<pair<int,int>, int>> wek;   // do log^2
-  vector <int> ran;                       // do log
-  vector <int> ile;                       // do log
-  vector <int> kol;
+  vector<pair<pii, int>> wek;   // do log^2
+  vi ran;                       // do log
+  vi ile;                       // do log
+  vi kol;
   
   //n to limit na długość słowa
   suffix_array(int n) {
-    wek.resize(n + 1, make_pair(make_pair(-1, -1), -1));
+    wek.resize(n + 1, mp(mp(-1, -1), -1));
     ran.resize(2 * n + 1);  
     ile.resize(n + 2);
     kol.resize(n + 2);
   }
 
   void sa_log_2(char *tab, int n, int *sa, int *ran, int *lcp) {
-    int l = 0;
+    int le = 0;
     for (int i = 1; i <= n; i++)
       ran[i] = tab[i];
     for (int h = 1; h <= n; h *= 2) {
       for (int i = 1; i <= n; i++)
-        wek[i].first.first = ran[i];
+        wek[i].st.st = ran[i];
       for (int i = 1; i + h <= n; i++)
-        wek[i].first.second = ran[i + h];
+        wek[i].st.nd = ran[i + h];
       for (int i = n - h + 1; i <= n; i++)
-        wek[i].first.second = 0;
+        wek[i].st.nd = 0;
       for (int i = 1; i <= n; i++)
-        wek[i].second = i;
+        wek[i].nd = i;
       sort(wek.begin() + 1, wek.begin() + 1 + n);
       le = 0;
       for (int i = 1; i <= n; i++) {
-        if (wek[i].first != wek[i - 1].first)
+        if (wek[i].st != wek[i - 1].st)
           le++;
-        ran[wek[i].second] = le;
+        ran[wek[i].nd] = le;
       }
     }
     for (int i = 1; i <= n; i++)
@@ -62,7 +62,7 @@ struct suffix_array {
     for (int i = 1; i <= n; ++i) {
       tab[++ile[val[kol[i]]]] = kol[i];
     }
-    fill(ile.begin(), ile.end(), 0);
+    fill(all(ile), 0);
   }
 
   void sa_log(char *tab, int n, int *sa, int *rank, int *lcp) {
