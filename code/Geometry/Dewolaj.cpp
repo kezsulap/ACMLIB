@@ -77,7 +77,8 @@ void anyTriangulation(vector<P> points) {
 			upper.pop_back();
 		}
 		upper.push_back(C);
-		while ((int)lower.size() >= 2 && lower[(int)lower.size() - 2].cross(lower.back(), C) < 0) {
+		while ((int)lower.size() >= 2 &&
+				lower[(int)lower.size() - 2].cross(lower.back(), C) < 0) {
 			addTriangle(C.id, backback(lower).id, lower.back().id);
 			lower.pop_back();
 		}
@@ -108,8 +109,10 @@ void dewolaj() {
 			int i = ppp.first.first, j = ppp.first.second;
 			assert(i != j);
 			edges.insert({i, j});
-			if (mt[{i, j}].first > j) triangles.push_back(vector<int>{i, j, mt[{i, j}].first});
-			if (mt[{i, j}].second > j) triangles.push_back(vector<int>{i, j, mt[{i, j}].second});
+			if (mt[{i, j}].first > j)
+				triangles.push_back(vector<int>{i, j, mt[{i, j}].first});
+			if (mt[{i, j}].second > j)
+				triangles.push_back(vector<int>{i, j, mt[{i, j}].second});
 		}
 	// edges zawiera krawędzie triangulacji
 }

@@ -11,8 +11,10 @@ __int128 det(hpl a, hpl b, hpl c) {
 }
 bool subset(hpl a, hpl b) {
 	if (ve(a.first, b.first) || sc(a.first, b.first) < 0) return false;
-	return a.second * (__int128) abs(b.first.first) >= b.second * (__int128) abs(a.first.first) &&
-		a.second * (__int128) abs(b.first.second) >= b.second * (__int128) abs(a.first.second);
+	return a.second * (__int128) abs(b.first.first) >=
+			b.second * (__int128) abs(a.first.first) &&
+			a.second * (__int128) abs(b.first.second) >=
+			b.second * (__int128) abs(a.first.second);
 }
 bool disjoint(hpl a, hpl b) {
 	return subset(a, {{-b.first.first, -b.first.second}, -b.second}); }
@@ -41,7 +43,8 @@ void ang_sort(vector <hpl> &a) {
 	left.insert(left.end(), right.begin(), right.end());
 	swap(a, left);
 }
-//Jeśli przecięcie jest nieograniczone, to półproste idące do nieskończoności są wyznaczone
+//Jeśli przecięcie jest nieograniczone, to półproste idące do nieskończoności
+//są wyznaczone
 //przez pierwszy i ostatni element zwróconego wektora
 //Jeśli przecięcie jest puste, zwraca pusty wektor
 vector <hpl> find_hull(vector <hpl> vec) {
@@ -53,11 +56,12 @@ vector <hpl> find_hull(vector <hpl> vec) {
 			return {}; //Przecięcie jest puste
 		if (!hull.empty() && disjoint(curr, hull[first]))
 			return {}; //Przecięcie jest puste
-		if (!hull.empty() && subset(hull.back(), curr)) //Case kiedy jedna półpłaszczyzna zawiera się w drugiej, na ogół można wywalić
-			continue;
+		if (!hull.empty() && subset(hull.back(), curr)) //Case kiedy jedna półpłaszczyzna
+			continue; //zawiera się w drugiej, na ogół można wywalić
 		if (!hull.empty() && subset(curr, hull.back())) //J.w.
 			hull.pop_back();
-		while (hull.size() - first >= 2u && det(hull.back(), *(hull.end() - 2), curr) <= 0) {
+		while (hull.size() - first >= 2u &&
+				det(hull.back(), *(hull.end() - 2), curr) <= 0) {
 			if (around(hull[hull.size() - 2], hull.back(), curr))
 				return {}; //Przecięcie jest puste
 			else

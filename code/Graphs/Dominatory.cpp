@@ -2,7 +2,8 @@ struct Dominators {
   int n_orig, n;
   vector<int> parent, semi, vertex, dom, ancestor, label;
   vector<vector<int>> succ, pred, bucket;
-  Dominators(int _n): n_orig(_n), n(_n + 1), parent(n), semi(n), vertex(n), dom(n), ancestor(n), label(n), succ(n), pred(n), bucket(n) {
+  Dominators(int _n): n_orig(_n), n(_n + 1), parent(n), semi(n), vertex(n), dom(n),
+			ancestor(n), label(n), succ(n), pred(n), bucket(n) {
     n = n_orig;
   }
   void add_edge(int a, int b){

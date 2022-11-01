@@ -2,7 +2,8 @@ struct Matching {
 	int n, tim = 0, top = 0;
 	vi mat, fa, s, q, pre, vis, head;
 	vpii e;
-	Matching(int N) : n(N + 1), mat(n, -1), fa(n), s(n), q(n), pre(n), vis(n), head(n, -1) {}
+	Matching(int N) : n(N + 1), mat(n, -1), fa(n), s(n), q(n), pre(n), vis(n),
+		head(n, -1) {}
 	void edge_impl(int x, int y) {e.eb(y, head[x]);head[x] = siz(e) - 1;}
 	void add_edge(int x, int y) {edge_impl(x, y), edge_impl(y, x);}
 	int find(int x) {return x == fa[x] ? x : fa[x] = find(fa[x]);}

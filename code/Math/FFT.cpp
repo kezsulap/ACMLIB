@@ -36,7 +36,8 @@ void dft(vector<C> & a, bool rev) {
 	}
 	if(rev) REP(i, n) a[i].real /= n;
 }
-template<typename T>vector<T> multiply(const vector<T> &a, const vector<T> &b, bool split = false) {
+template<typename T>vector<T> multiply(const vector<T> &a, const vector<T> &b,
+		bool split = false) {
 	if(a.empty() || b.empty()) return {};
 	int n = a.size() + b.size();
 	vector<T> ans(n - 1);
@@ -81,7 +82,8 @@ template<typename T>vector<T> multiply(const vector<T> &a, const vector<T> &b, b
 		for (int i = 0; i < n; ++i)
 			d1[i].imag /= n;
 		for (int i = 0; i < (int) ans.size(); ++i)
-			ans[i] = (llround(d1[i].real) + llround(d2[i].real) % mod * M + llround(d1[i].imag) % mod * (M * M)) % mod;
+			ans[i] = (llround(d1[i].real) + llround(d2[i].real) % mod * M +
+				llround(d1[i].imag) % mod * (M * M)) % mod;
 	}
 	return ans;
 }

@@ -1,4 +1,4 @@
-Znaleziony cykl niekoniecznie jest najmniejszym cyklem, wiadomo jednak, że cykl(m) <= 6m
+Znaleziony cykl niekoniecznie jest najmniejszym cyklem, wiadomo jednak, że cykl(m)<=6m
 Dla m, które nie są postaci 2 * 5^r, zachodzi ograniczenie: cykl(m) <= 4m.
 Jeśli nie zrobi się Nww, to wiadomo, że cykl(m) <= m * 2**(1 + #dz.pierw.m).
 cycle(2) = 3, cycle(5) = 20, cycle(p == 1 or 9 mod 10) = p - 1
