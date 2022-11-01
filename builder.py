@@ -4,15 +4,15 @@ import sys
 
 options = {
 	'number_of_columns': 2,
-	'characters_in_a_row': 90,
+	'characters_in_a_row': 87,
 	'expandtab': 2,
 	'width': 297,
 	'height': 210,
-	'margin_top': 6,
-	'margin_bottom': 9,
-	'margin_left': 8,
+	'margin_top': 5,
+	'margin_bottom': 6,
+	'margin_left': 7,
 	'margin_middle': 4,
-	'margin_right': 8,
+	'margin_right': 7,
 
 	'big_letter_box_percent': 0.8,
 	'big_letter_size_percent': 0.7,

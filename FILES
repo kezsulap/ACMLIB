@@ -34,6 +34,7 @@ code/Math/Multipoint_Evaluation.cpp
 code/Math/Simplex.cpp
 code/Math/Simpson.cpp
 code/Math/Wzory.tex
+code/Math/Wzory-2.tex
 code/Miscellaneous/De_Bruijn.cpp
 code/Miscellaneous/Loops.cpp
 code/Number_Theory/Cornacchia.cpp
