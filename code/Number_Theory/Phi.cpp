@@ -5,7 +5,7 @@ struct Coprimes {
 			return v-1;
 		return w.size()-w.back()/v;
 	}
-	ll phi(ll n) {
+	ll phi(ll n) { //sum [k = 1 to n] phi(k)
 		for (ll i=1; i*i<=n; i++) {
 			w.push_back(i);
 			if ((n/i)!=i)
@@ -22,4 +22,4 @@ struct Coprimes {
 		return dp.back();
 	}
 	ll ask(ll v) { return dp[gdz(v)]; }//v==n/u for some u
-};
+}; //phi(10 ** 10) = 2726238982321888942

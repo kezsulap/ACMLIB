@@ -2,10 +2,8 @@ const int MAXN = 404, sigma = 26;
 int term[MAXN], len[MAXN], to[MAXN][sigma], link[MAXN], sz = 1;
 void add_str(string s) {
 	int cur = 0;
-	for(auto c: s)
-	{
-		if(!to[cur][c - 'a'])
-		{
+	for(auto c: s) {
+		if(!to[cur][c - 'a']) {
 			to[cur][c - 'a'] = sz++;
 			len[to[cur][c - 'a']] = len[cur] + 1;
 		}

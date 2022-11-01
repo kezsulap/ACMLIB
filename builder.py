@@ -4,7 +4,7 @@ import sys
 
 options = {
 	'number_of_columns': 2,
-	'characters_in_a_row': 87,
+	'characters_in_a_row': 89,
 	'expandtab': 2,
 	'width': 297,
 	'height': 210,

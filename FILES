@@ -19,11 +19,13 @@ code/Graphs/2sat.cpp
 code/Graphs/Centroid.cpp
 code/Graphs/DMST.cpp
 code/Graphs/Dominatory.cpp
+code/Graphs/Euler_Cycle.cpp
 code/Graphs/HLD.cpp
 code/Graphs/Link_Cut.cpp
 code/Graphs/Low.cpp
 code/Graphs/Planarity_Check.cpp
 code/Graphs/Smulewicz.cpp
+code/Graphs/SCC.cpp
 code/Graphs/SSS.cpp
 code/Graphs/Vizing.cpp
 code/Math/BitoweFFT.cpp
@@ -48,6 +50,7 @@ code/Number_Theory/Rho.cpp
 code/Strings/Aho.cpp
 code/Strings/Eertree.cpp
 code/Strings/Graf_Podslow.cpp
+code/Strings/KMP.cpp
 code/Strings/Lyndon.cpp
 code/Strings/Manacher.cpp
 code/Strings/Pref.cpp

@@ -63,3 +63,7 @@ sim> inline c lyl(c m) {
 	c x = m & -m;
 	return (m ^ x) | ((x << 1) / 3);
 }
+for (ll val = 1, low = n / 2, high = n; ; val = n / low, high = low, low = n / (val + 1)) {
+	//include n / i = val for i in (low, high]
+	if (val == n) break;
+}
