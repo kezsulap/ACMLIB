@@ -8,7 +8,6 @@ using namespace std;
 #define mp make_pair
 #define pb push_back
 #define eb emplace_back
-#define endl '\n'
 #define siz(c) (int)(c).size()
 #define all(c) (c).begin(), (c).end()
 #define sim template < class c
@@ -60,18 +59,8 @@ using ll = long long; using ld = long double; using pii = pair <int, int>; using
 using vpii = vector<pii>; using ull = unsigned long long; using unt = unsigned int; using pdd = pair <ld, ld>;
 using pll = pair <ll, ll>; using vll = vector <ll>; using mii = map <int, int>;
 sim> void mini(c &a, const c &b) {if (a > b) a = b;} sim> void maxi(c &a, const c &b) {if (a < b) a = b;}
-
+#define endl '\n'
 int32_t main() {
-	// ios_base::sync_with_stdio(0);
-	// cin.tie(0);
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
 }
-
-// struct foo {int a, int b};
-// muu &operator<<(muu &d, const foo &f) {
-	// return d << "foo(" << f.a << ", " << f.b << ")";
-// }
-// int main() {
-	// vector <pair <int, int> > a = {{1, 2}, {2, 3}, {3, 4}};
-	// int b = 2;
-	// debug imie(a) imask(10) arr(a, b) fun(atan2, 1, 3) range(a.begin(), a.begin() + 2);
-// }
